@@ -6,10 +6,14 @@ setGeneric("version", function(object) {
     standardGeneric("version")
 })
 
-setGeneric("url", function(object) {
-    standardGeneric("url")
+setGeneric("serviceURL", function(object) {
+    standardGeneric("serviceURL")
 })
 
 setGeneric("queryFIs", function(object, genes) {
     standardGeneric("queryFIs")
+})
+
+setGeneric("cluster", function(object, fis) {
+    standardGeneric("cluster")
 })

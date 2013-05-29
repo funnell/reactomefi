@@ -2,7 +2,7 @@ setMethod("version", signature("ReactomeFIService"), function(object) {
     object@version
 })
 
-setMethod("url", signature("ReactomeFIService"), function(object) {
+setMethod("serviceURL", signature("ReactomeFIService"), function(object) {
     version <- version(object)
     base.url = "http://reactomews.oicr.on.ca:8080/"
     if (version == "2012") {
@@ -14,11 +14,11 @@ setMethod("url", signature("ReactomeFIService"), function(object) {
 setMethod("queryFIs",
           signature("ReactomeFIService", genes = "character"),
           function(object, genes) {
-    url <- paste(url(object), "queryFIs", sep="")
+    service.url <- paste(serviceURL(object), "queryFIs", sep="")
     genes.str <- paste(genes, collapse = "\t")
     opts <- list(httpheader = c("Content-Type" = "text/plain;charset=UTF-8",
                                 Accept = "application/xml"))
-    xml <- postForm(url,  genes = genes.str, .opts = opts)
+    xml <- postForm(service.url,  genes = genes.str, .opts = opts)
     doc <- xmlInternalTreeParse(xml)
     interactions <- xpathApply(doc, "//interaction", function(x) {
         info <- xmlChildren(x)
@@ -28,4 +28,45 @@ setMethod("queryFIs",
                    second.protein = second.protein)
     })
     do.call(rbind, interactions)
+})
+
+fis2str <- function(fis) {
+    fis[, "first.protein"] <- as.character(fis[, "first.protein"])
+    fis[, "second.protein"] <- as.character(fis[, "second.protein"])
+    fis <- cbind(data.frame(id=1:nrow(fis)), fis)
+
+    fis.list = c()
+    for (i in 1:nrow(fis)) {
+        first.protein <- fis[i, "first.protein"]
+        second.protein <- fis[i, "second.protein"]
+        if (first.protein < second.protein) {
+            fi.str <- paste(first.protein, second.protein, sep = "\t")
+        } else {
+            fi.str <- paste(second.protein, first.protein, sep = "\t")
+        }
+        fi.str <- paste(fis[i, "id"], fi.str, sep="\t")
+        fis.list <- c(fis.list, fi.str)
+    }
+    fis.str <- paste(fis.list, collapse="\n")
+    return(fis.str)
+}
+
+setMethod("cluster",
+          signature("ReactomeFIService", "data.frame"),
+          function(object, fis) {
+    fis.str <- fis2str(fis)
+
+    service.url <- paste(serviceURL(object), "cluster", sep="")
+    opts <- list(httpheader = c("Content-Type" = "text/plain;charset=UTF-8",
+                                Accept = "application/xml"))
+    xml <- postForm(service.url,  queryFIs = fis.str, .opts = opts,
+                    style="post", .contentEncodeFun=function(x) x)
+    doc <- xmlInternalTreeParse(xml)
+    clusters <- xpathApply(doc, "//geneClusterPairs", function(x) {
+        info <- xmlChildren(x)
+        cluster <- xmlValue(info$cluster)
+        gene <- xmlValue(info$geneId)
+        data.frame(cluster = cluster, gene = gene)
+    })
+    do.call(rbind, clusters)
 })
