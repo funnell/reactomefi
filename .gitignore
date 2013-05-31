@@ -1,5 +1,9 @@
 # History files
 .Rhistory
+.Rapp.history
+
+# RData files
+.RData
 
 # Example code in package build process
 *-Ex.R
