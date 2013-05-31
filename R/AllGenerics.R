@@ -14,6 +14,11 @@ setGeneric("queryFIs", function(object, genes) {
     standardGeneric("queryFIs")
 })
 
+setGeneric("annotateGeneSet",
+           function(object, genes, type = c("Pathway", "BP", "CC", "MF")) {
+    standardGeneric("annotateGeneSet")
+})
+
 setGeneric("cluster", function(object, fis) {
     standardGeneric("cluster")
 })
