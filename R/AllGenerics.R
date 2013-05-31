@@ -22,3 +22,9 @@ setGeneric("annotateGeneSet",
 setGeneric("cluster", function(object, fis) {
     standardGeneric("cluster")
 })
+
+setGeneric("annotateModules",
+           function(object, module.nodes,
+                    type = c("Pathway", "BP", "CC", "MF")) {
+    standardGeneric("annotateModules")
+})

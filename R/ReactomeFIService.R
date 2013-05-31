@@ -37,36 +37,6 @@ setMethod("queryFIs",
     return(do.call(rbind, interactions))
 })
 
-setMethod("annotateGeneSet",
-          signature("ReactomeFIService", "character", "character"),
-          function(object, genes, type = c("Pathway", "BP", "CC", "MF")) {
-    type <- match.arg(type)
-    service.url <- paste(serviceURL(object), "annotateGeneSet/", type, sep="")
-    genes.str <- paste(genes, collapse = "\n")
-    doc <- getPostXML(service.url, genes.str)
-    annotations <- xpathApply(doc, "//annotations", function(x) {
-        info <- xmlChildren(x)
-        data.frame(topic = xmlValue(info$topic),
-                   hit.num = xmlValue(info$hitNumber),
-                   number.in.topic = xmlValue(info$numberInTopic),
-                   ratio.of.topic = xmlValue(info$ratioOfTopic),
-                   p.value = xmlValue(info$PValue),
-                   fdr = xmlValue(info$fdr),
-                   hits = paste(xpathSApply(x, "./hitIds", xmlValue),
-                                collapse = ","),
-                   stringsAsFactors = FALSE)
-    })
-    annotations <- do.call(rbind, annotations)
-    annotations$hit.num <- as.numeric(annotations$hit.num)
-    annotations$number.in.topic <- as.numeric(annotations$number.in.topic)
-    annotations$ratio.of.topic <- as.numeric(annotations$ratio.of.topic)
-    annotations$p.value <- as.numeric(annotations$p.value)
-    annotations$fdr <- gsub("<", "", annotations$fdr)
-    annotations$fdr <- as.numeric(annotations$fdr)
-
-    return(annotations[order(annotations$fdr), ])
-})
-
 fis2str <- function(fis) {
     fis[, "first.protein"] <- as.character(fis[, "first.protein"])
     fis[, "second.protein"] <- as.character(fis[, "second.protein"])
@@ -98,7 +68,71 @@ setMethod("cluster",
         info <- xmlChildren(x)
         cluster <- xmlValue(info$cluster)
         gene <- xmlValue(info$geneId)
-        data.frame(cluster = cluster, gene = gene)
+        data.frame(gene = gene, cluster = cluster)
     })
     return(do.call(rbind, clusters))
+})
+
+extractAnnotations <- function(xml.node) {
+    annotations <- xpathApply(xml.node, "./annotations", function(x) {
+        info <- xmlChildren(x)
+        data.frame(topic = xmlValue(info$topic),
+                   hit.num = xmlValue(info$hitNumber),
+                   number.in.topic = xmlValue(info$numberInTopic),
+                   ratio.of.topic = xmlValue(info$ratioOfTopic),
+                   p.value = xmlValue(info$PValue),
+                   fdr = xmlValue(info$fdr),
+                   hits = paste(xpathSApply(x, "./hitIds", xmlValue),
+                                collapse = ","),
+                   stringsAsFactors = FALSE)
+    })
+    if (length(annotations) == 0) return(NA)
+    annotations <- do.call(rbind, annotations)
+    annotations$hit.num <- as.numeric(annotations$hit.num)
+    annotations$number.in.topic <- as.numeric(annotations$number.in.topic)
+    annotations$ratio.of.topic <- as.numeric(annotations$ratio.of.topic)
+    annotations$p.value <- as.numeric(annotations$p.value)
+    annotations$fdr <- gsub("<", "", annotations$fdr)
+    annotations$fdr <- as.numeric(annotations$fdr)
+    return(annotations[order(annotations$fdr), ])
+}
+
+setMethod("annotateGeneSet",
+          signature("ReactomeFIService", "character", "character"),
+          function(object, genes, type = c("Pathway", "BP", "CC", "MF")) {
+    type <- match.arg(type)
+    service.url <- paste(serviceURL(object), "annotateGeneSet/", type, sep="")
+    genes.str <- paste(genes, collapse = "\n")
+    doc <- getPostXML(service.url, genes.str)
+    annot.node <- xmlChildren(doc)$moduleGeneSetAnnotations
+    annot.node <- xmlChildren(annot.node)$moduleGeneSetAnnotation
+    annotations <- extractAnnotations(annot.node)
+    return(annotations)
+})
+
+df2tsv <- function(dat) {
+    tsv <- apply(dat, 1, function(x) paste(x, collapse = "\t"))
+    tsv <- paste(tsv, collapse = "\n")
+    return(tsv)
+}
+
+setMethod("annotateModules",
+          signature("ReactomeFIService", "data.frame", "character"),
+          function(object, module.nodes,
+                   type = c("Pathway", "BP", "CC", "MF")) {
+    type <- match.arg(type)
+    service.url <- paste(serviceURL(object), "annotateModules/", type, sep="")
+    query <- df2tsv(module.nodes)
+    doc <- getPostXML(service.url, query)
+    module.annotations <- xpathApply(doc, "//moduleGeneSetAnnotation",
+                                     function(x) {
+        module <- xmlValue(xmlChildren(x)$module)
+        annotations <- extractAnnotations(x)
+        if (all(is.na(annotations))) return(annotations)
+        cbind(data.frame(module = module), annotations)
+    })
+    module.annotations <- module.annotations[!is.na(module.annotations)]
+    module.annotations <- do.call(rbind, module.annotations)
+    module.annotations$module <- as.numeric(module.annotations$module)
+    return(module.annotations)
 })
