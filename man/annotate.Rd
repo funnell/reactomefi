@@ -1,6 +1,6 @@
-\name{annotateModules}
-\alias{annotateModules}
-\title{Annotate Network Modules}
+\name{annotate}
+\alias{annotate}
+\title{Annotate Network}
 \arguments{
   \item{object}{ReactomeFINetwork object.}
 
@@ -11,12 +11,9 @@
 }
 \value{
   data.frame Results of the gene set enrichment analysis.
-  The output will be the same as the \code{\link{annotate}}
-  method plus another column for the module the annotation
-  corresponds to.
 }
 \description{
-  Perform gene set enrichment analysis on clustered network
-  modules with pathways or GO terms.
+  Perform gene set enrichment analysis with pathways or GO
+  terms.
 }
 

@@ -2,7 +2,7 @@
 \alias{ReactomeFIService}
 \title{ReactomeFIService Class}
 \usage{
-  ReactomeFIService(version = "2009")
+  ReactomeFIService(version = c("2009", "2012"))
 }
 \arguments{
   \item{version}{character version of Reactome FI network
@@ -13,8 +13,8 @@
 }
 \description{
   Represents an interface to the ReactomeFI RESTful API.
-  Available versions include 2009 and 2012
+  Available versions include 2009 and 2012.
 
-  ReactomeFIService constructor
+  ReactomeFIService constructor.
 }
 

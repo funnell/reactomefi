@@ -1,19 +1,16 @@
 \name{cluster}
 \alias{cluster}
-\title{Cluster Functional Interaction Network}
+\title{Cluster Network}
 \arguments{
-  \item{object}{ReactomeFIService object.}
-
-  \item{fis}{Data frame of functional interactions (see
-  output of queryFIs).}
+  \item{object}{ReactomeFINetwork object.}
 }
 \value{
-  data.frame Each row contains the gene name and the module
-  id.
+  ReactomeFINetwork ReactomeFINetwork object with module
+  attribute set
 }
 \description{
-  Query the RESTful API to cluster a FI network. The
-  network nodes (genes) and the network modules they belong
-  to are returned.
+  Cluster FI network using its functional interaction data.
+  This method uses the spectral partition based network
+  clustering algorithm by M.E. Newman.
 }
 

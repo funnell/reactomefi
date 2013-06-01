@@ -75,7 +75,7 @@ fis2str <- function(fis) {
     return(fis.str)
 }
 
-setMethod("cluster",
+setMethod("queryCluster",
           signature("ReactomeFIService", "data.frame"),
           function(object, fis) {
     service.url <- paste(serviceURL(object), "cluster", sep="")
@@ -114,7 +114,7 @@ extractAnnotations <- function(xml.node) {
     return(annotations[order(annotations$fdr), ])
 }
 
-setMethod("annotateGeneSet",
+setMethod("queryAnnotateGeneSet",
           signature("ReactomeFIService", "character", "character"),
           function(object, genes, type = c("Pathway", "BP", "CC", "MF")) {
     type <- match.arg(type)
@@ -140,7 +140,7 @@ df2tsv <- function(dat) {
     return(tsv)
 }
 
-setMethod("annotateModules",
+setMethod("queryAnnotateModules",
           signature("ReactomeFIService", "data.frame", "character"),
           function(object, module.nodes,
                    type = c("Pathway", "BP", "CC", "MF")) {

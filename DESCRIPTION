@@ -13,3 +13,4 @@ Collate:
     'AllClasses.R'
     'AllGenerics.R'
     'ReactomeFIService.R'
+    'ReactomeFINetwork.R'
