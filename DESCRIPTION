@@ -1,4 +1,4 @@
-Package: ReactomeFI
+Package: reactomefi
 Title: Reactome FI network analysis tools
 Description: R implementation of the ReactomeFI Cytoscape plugin. Connects to
     the ReactomeFI RESTful API to perform analyses.
