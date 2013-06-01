@@ -17,9 +17,9 @@ setMethod("serviceURL", signature("ReactomeFIService"), function(object) {
 #' curlPerform's postfields argument. curlPerform is used instead of postForm
 #' to allow sending unkeyed data.
 #'
-#' @param url character string containing URL to post query to
-#' @param body character string containing data to send in the post request
-#' @return XMLDocument
+#' @param url Character string containing URL to post query to.
+#' @param body Character string containing data to send in the post request.
+#' @return XMLDocument XML document generated from the POST query response.
 getPostXML <- function(url, body) {
     text.gatherer <- basicTextGatherer()
     opts <- list(httpheader = c("Content-Type" = "text/plain;charset=UTF-8",
@@ -49,10 +49,11 @@ setMethod("queryFIs",
 #' FIs to String
 #'
 #' Convert a FI data frame into a string according to conventions used in the
-#' ReactomeFI API
+#' ReactomeFI API.
 #'
 #' @param fis data frame of FIs (each row contains two gene names)
-#' @return character
+#' @return character Character string in TSV format where rows are separated
+#'  by "\\n" and columns within rows are separated by "\\t"
 fis2str <- function(fis) {
     fis[, "first.protein"] <- as.character(fis[, "first.protein"])
     fis[, "second.protein"] <- as.character(fis[, "second.protein"])
@@ -128,11 +129,11 @@ setMethod("annotateGeneSet",
 
 #' Data Frame to TSV
 #'
-#' Convert a data frame (not including headers) into a TSV string. Each row is
-#' separated by "\n" and each column within a row is separated by a "\t"
+#' Convert a data frame (not including headers) into a TSV string.
 #'
-#' @param dat data frame
-#' @return character
+#' @param dat Data frame to be converted to a TSV string.
+#' @return character Each row is separated by "\\n" and each column within a
+#'  row is separated by a "\\t".
 df2tsv <- function(dat) {
     tsv <- apply(dat, 1, function(x) paste(x, collapse = "\t"))
     tsv <- paste(tsv, collapse = "\n")
