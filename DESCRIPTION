@@ -1,0 +1,15 @@
+Package: ReactomeFI
+Title: Reactome FI network analysis tools
+Description: R implementation of the ReactomeFI Cytoscape plugin. Connects to
+    the ReactomeFI RESTful API to perform analyses.
+Version: 0.0.1
+Maintainer: Tyler Funnell <tyler.funnell@gmail.com>
+Author: Tyler Funnell <tyler.funnell@gmail.com>
+Imports:
+    RCurl,
+    XML
+License: BSD
+Collate:
+    'AllClasses.R'
+    'AllGenerics.R'
+    'ReactomeFIService.R'
