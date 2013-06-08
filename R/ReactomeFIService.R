@@ -81,13 +81,15 @@ setMethod("queryCluster",
     service.url <- paste(serviceURL(object), "cluster", sep="")
     fis.str <- fis2str(fis)
     doc <- getPostXML(service.url, fis.str)
-    clusters <- xpathApply(doc, "//geneClusterPairs", function(x) {
+    modules <- xpathApply(doc, "//geneClusterPairs", function(x) {
         info <- xmlChildren(x)
-        cluster <- xmlValue(info$cluster)
+        module <- xmlValue(info$cluster)
         gene <- xmlValue(info$geneId)
-        data.frame(gene = gene, cluster = cluster)
+        data.frame(gene = gene, module = module, stringsAsFactors = F)
     })
-    return(do.call(rbind, clusters))
+    modules <- do.call(rbind, modules)
+    modules$module <- as.numeric(modules$module)
+    return(modules)
 })
 
 extractAnnotations <- function(xml.node) {
