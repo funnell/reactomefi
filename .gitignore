@@ -10,3 +10,6 @@
 
 # Swap files
 *.swp
+
+# R CMD CHECK directory
+..Rcheck
