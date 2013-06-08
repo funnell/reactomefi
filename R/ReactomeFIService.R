@@ -160,5 +160,6 @@ setMethod("queryAnnotateModules",
     module.annotations <- module.annotations[!is.na(module.annotations)]
     module.annotations <- do.call(rbind, module.annotations)
     module.annotations$module <- as.numeric(module.annotations$module)
+    module.annotations$module <- module.annotations$module - 1
     return(module.annotations)
 })
