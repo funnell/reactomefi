@@ -24,7 +24,22 @@ setGeneric("serviceURL", function(object) standardGeneric("serviceURL"))
 #' @param genes Character vector of gene names.
 #' @return data.frame Each row represents a functional interaction and
 #'  comprises two columns - one for each gene in the interaction.
-setGeneric("queryFIs", function(object, genes) standardGeneric("queryFIs"))
+setGeneric("queryFIs", function(object, genes) {
+    standardGeneric("queryFIs")
+})
+
+#' Query Build Network
+#'
+#' Query the RESTful API for FIs between genes in a provided vector. Uses
+#' linker genes.
+#'
+#' @param object ReactomeFIService object.
+#' @param genes Character vector of gene names.
+#' @return data.frame Each row represents a functional interaction and
+#'  comprises two columns - one for each gene in the interaction.
+setGeneric("queryBuildNetwork", function(object, genes) {
+    standardGeneric("queryBuildNetwork")
+})
 
 #' Query Cluster Functional Interaction Network
 #'
@@ -32,7 +47,8 @@ setGeneric("queryFIs", function(object, genes) standardGeneric("queryFIs"))
 #' and the network modules they belong to are returned.
 #'
 #' @param object ReactomeFIService object.
-#' @param fis Data frame of functional interactions (see output of queryFIs).
+#' @param fis Data frame of functional interactions. Should be two columns per
+#'  row indicating the two nodes in the interaction
 #' @return data.frame Each row contains the gene name and the module id.
 setGeneric("queryCluster", function(object, fis) {
     standardGeneric("queryCluster")

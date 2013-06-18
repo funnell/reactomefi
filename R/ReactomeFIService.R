@@ -31,9 +31,25 @@ getPostXML <- function(url, body) {
 }
 
 setMethod("queryFIs",
-          signature("ReactomeFIService", genes = "character"),
+          signature("ReactomeFIService", "character"),
           function(object, genes) {
     service.url <- paste(serviceURL(object), "queryFIs", sep="")
+    genes.str <- paste(genes, collapse = "\t")
+    doc <- getPostXML(service.url, genes.str)
+    interactions <- xpathApply(doc, "//interaction", function(x) {
+        info <- xmlChildren(x)
+        first.protein <- xmlValue(xmlChildren(info$firstProtein)$name)
+        second.protein <- xmlValue(xmlChildren(info$secondProtein)$name)
+        data.frame(first.protein = first.protein,
+                   second.protein = second.protein)
+    })
+    return(do.call(rbind, interactions))
+})
+
+setMethod("queryBuildNetwork",
+          signature("ReactomeFIService", "character"),
+          function(object, genes) {
+    service.url <- paste(serviceURL(object), "buildNetwork", sep="")
     genes.str <- paste(genes, collapse = "\t")
     doc <- getPostXML(service.url, genes.str)
     interactions <- xpathApply(doc, "//interaction", function(x) {

@@ -11,6 +11,14 @@ test_that("queryFIs constructs a network", {
     expect_that(queryFIs(service, genes), equals(fis))
 })
 
+test_that("queryBuildNetwork constructs a network with linkers", {
+    genes <- c("BECN1", "RAE1")
+    fis <- data.frame(
+        first.protein = c("XPO1", "XPO1"),
+        second.protein = c("BECN1", "RAE1"))
+    expect_that(queryBuildNetwork(service, genes), equals(fis))
+})
+
 test_that("queryCluster clusters a network", {
     fis <- data.frame(
         first.protein = c("A", "B", "A", "A", "D", "E", "D"),
