@@ -202,6 +202,11 @@ setMethod("queryAnnotateGeneSet",
 #' @return character Each row is separated by "\\n" and each column within a
 #'  row is separated by a "\\t".
 df2tsv <- function(dat) {
+    for (i in 1:ncol(dat)) {
+        if (class(dat[, i]) == "numeric") {
+            dat[, i] <- format(dat[, i], trim = TRUE)
+        }
+    }
     tsv <- apply(dat, 1, function(x) paste(x, collapse = "\t"))
     tsv <- paste(tsv, collapse = "\n")
     return(tsv)
