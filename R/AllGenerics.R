@@ -52,6 +52,20 @@ setGeneric("queryFIsBetween", function(object, gene.pairs) {
     standardGeneric("queryFIsBetween")
 })
 
+#' Query Edge
+#'
+#' Query detailed information for a network edge.
+#'
+#' @param object ReactomeFIService object
+#' @param name1 Name of the first gene in the interaction.
+#' @param name2 Name of the second gene in the interaction.
+#' @return data.frame Each of the two rows corresponds to a protein specified
+#'  in the input parameters. The columns contain information regarding the
+#'  proteins including accession ID, database name, protein name and sequence.
+setGeneric("queryEdge", function(object, name1, name2) {
+    standardGeneric("queryEdge")
+})
+
 #' Query Cluster Functional Interaction Network
 #'
 #' Query the RESTful API to cluster a FI network. The network nodes (genes)

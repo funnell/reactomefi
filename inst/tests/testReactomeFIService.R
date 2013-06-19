@@ -40,6 +40,16 @@ test_that("queryFIsBetween returns FIs between certain genes", {
     expect_that(queryFIsBetween(service, gene.pairs), equals(fis))
 })
 
+test_that("queryEdge returns detailed information for an edge", {
+    info.subset <- data.frame(
+        accession = c("P00533", "P04637"),
+        db.name = c("UniProt", "UniProt"),
+        short.name = c("EGFR", "TP53"))
+    subset.cols <- c("accession", "db.name", "short.name")
+    expect_that(queryEdge(service, "TP53", "EGFR")[subset.cols],
+                equals(info.subset))
+})
+
 test_that("queryAnnotateGeneSet returns annotations", {
     genes <- c("TP53", "PTEN", "EGFR")
     annotations <- queryAnnotateGeneSet(service, genes, "Pathway")

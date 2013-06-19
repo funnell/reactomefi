@@ -78,6 +78,39 @@ setMethod("queryFIsBetween",
     return(extractFIs(doc))
 })
 
+#' extract Protein Info
+#'
+#' Extract protein information including accession ID and DB name, protein
+#'  name, and sequence.
+#'
+#' @param protein.node XML node containing protein information
+#' @return data.frame Data frame where each row corresponds to a protein and
+#'  the columns contain the information mentioned above.
+extractProteinInfo <- function(protein.node) {
+    accession <- xmlValue(xmlChildren(protein.node)$accession)
+    db.name <- xmlValue(xmlChildren(protein.node)$dbName)
+    name <- xmlValue(xmlChildren(protein.node)$name)
+    short.name <- xmlValue(xmlChildren(protein.node)$shortName)
+    prot.seq <- xmlValue(xmlChildren(protein.node)$sequence)
+    info <- data.frame(accession = accession,
+                       db.name = db.name,
+                       short.name = short.name,
+                       name = name,
+                       sequence = prot.seq)
+    return(info)
+}
+
+setMethod("queryEdge",
+          signature("ReactomeFIService", "character", "character"),
+          function(object, name1, name2) {
+    service.url <- paste(serviceURL(object), "queryEdge", sep="")
+    edge.str <- paste(name1, name2, sep = "\t")
+    doc <- getPostXML(service.url, edge.str)
+    first.prot <- getNodeSet(doc, "//firstProtein", fun = extractProteinInfo)
+    second.prot <- getNodeSet(doc, "//secondProtein", fun = extractProteinInfo)
+    return(do.call(rbind, c(first.prot, second.prot)))
+})
+
 #' FIs to String
 #'
 #' Convert a FI data frame into a string according to conventions used in the
