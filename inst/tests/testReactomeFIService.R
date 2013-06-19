@@ -30,6 +30,16 @@ test_that("queryCluster clusters a network", {
     expect_that(queryCluster(service, fis), equals(modules))
 })
 
+test_that("queryFIsBetween returns FIs between certain genes", {
+    gene.pairs <- data.frame(
+        first.protein = c("EGFR", "PTEN", "EGFR"),
+        second.protein = c("TP53", "TP53", "PTEN"))
+    fis <- data.frame(
+        first.protein = c("EGFR", "PTEN"),
+        second.protein = c("TP53", "TP53"))
+    expect_that(queryFIsBetween(service, gene.pairs), equals(fis))
+})
+
 test_that("queryAnnotateGeneSet returns annotations", {
     genes <- c("TP53", "PTEN", "EGFR")
     annotations <- queryAnnotateGeneSet(service, genes, "Pathway")

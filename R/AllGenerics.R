@@ -24,9 +24,7 @@ setGeneric("serviceURL", function(object) standardGeneric("serviceURL"))
 #' @param genes Character vector of gene names.
 #' @return data.frame Each row represents a functional interaction and
 #'  comprises two columns - one for each gene in the interaction.
-setGeneric("queryFIs", function(object, genes) {
-    standardGeneric("queryFIs")
-})
+setGeneric("queryFIs", function(object, genes) standardGeneric("queryFIs"))
 
 #' Query Build Network
 #'
@@ -39,6 +37,19 @@ setGeneric("queryFIs", function(object, genes) {
 #'  comprises two columns - one for each gene in the interaction.
 setGeneric("queryBuildNetwork", function(object, genes) {
     standardGeneric("queryBuildNetwork")
+})
+
+#' Query FIs Between Genes
+#'
+#' Query FIs between a list of pairs of genes.
+#'
+#' @param object ReactomeFIService object
+#' @param gene.pairs Data frame or matrix of gene pairs in which to look for
+#'  FIs. Each row contains two columns - one for each gene in the pair.
+#' @return data.frame Each row represents a functional interaction and
+#'  comprises two columns - one for each gene in the interaction.
+setGeneric("queryFIsBetween", function(object, gene.pairs) {
+    standardGeneric("queryFIsBetween")
 })
 
 #' Query Cluster Functional Interaction Network

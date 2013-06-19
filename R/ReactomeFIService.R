@@ -30,12 +30,14 @@ getPostXML <- function(url, body) {
     return(xml)
 }
 
-setMethod("queryFIs",
-          signature("ReactomeFIService", "character"),
-          function(object, genes) {
-    service.url <- paste(serviceURL(object), "queryFIs", sep="")
-    genes.str <- paste(genes, collapse = "\t")
-    doc <- getPostXML(service.url, genes.str)
+#' Extract FIs From XML Document
+#'
+#' Extract FI gene pairs from an XML document returned from a server query.
+#'
+#' @param doc XML document
+#' @return data.frame Data frame where each row represents an FI and each of
+#'  the two columns in the data frame contains a gene involved in the FI.
+extractFIs <- function(doc) {
     interactions <- xpathApply(doc, "//interaction", function(x) {
         info <- xmlChildren(x)
         first.protein <- xmlValue(xmlChildren(info$firstProtein)$name)
@@ -44,6 +46,15 @@ setMethod("queryFIs",
                    second.protein = second.protein)
     })
     return(do.call(rbind, interactions))
+}
+
+setMethod("queryFIs",
+          signature("ReactomeFIService", "character"),
+          function(object, genes) {
+    service.url <- paste(serviceURL(object), "queryFIs", sep="")
+    genes.str <- paste(genes, collapse = "\t")
+    doc <- getPostXML(service.url, genes.str)
+    return(extractFIs(doc))
 })
 
 setMethod("queryBuildNetwork",
@@ -52,14 +63,19 @@ setMethod("queryBuildNetwork",
     service.url <- paste(serviceURL(object), "buildNetwork", sep="")
     genes.str <- paste(genes, collapse = "\t")
     doc <- getPostXML(service.url, genes.str)
-    interactions <- xpathApply(doc, "//interaction", function(x) {
-        info <- xmlChildren(x)
-        first.protein <- xmlValue(xmlChildren(info$firstProtein)$name)
-        second.protein <- xmlValue(xmlChildren(info$secondProtein)$name)
-        data.frame(first.protein = first.protein,
-                   second.protein = second.protein)
-    })
-    return(do.call(rbind, interactions))
+    return(extractFIs(doc))
+})
+
+setMethod("queryFIsBetween",
+          signature("ReactomeFIService", "data.frame"),
+          function(object, gene.pairs) {
+    service.url <- paste(serviceURL(object), "queryFIsBetween", sep="")
+    gene.pairs <- as.matrix(gene.pairs)
+    first.str <- paste(gene.pairs[, 1], collapse = ",")
+    second.str <- paste(gene.pairs[, 2], collapse = ",")
+    pairs.str <- paste(first.str, second.str, sep = "\n")
+    doc <- getPostXML(service.url, pairs.str)
+    return(extractFIs(doc))
 })
 
 #' FIs to String
