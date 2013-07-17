@@ -54,17 +54,15 @@ setClass("ReactomeFINetwork",
 #'
 #' ReactomeFINetwork constructor
 #'
-#' @param genes Character vector of gene names.
 #' @param version Version of ReactomeFI network (2009 or 2012).
 #' @return ReactomeFINetwork ReactomeFINetwork S4 object with FI network
 #'  generated from gene list.
 #'
 #' @export
 #' @rdname ReactomeFINetwork
-ReactomeFINetwork <- function(genes, version = c("2009", "2012")) {
+ReactomeFINetwork <- function(version = c("2009", "2012")) {
     version <- match.arg(version)
     service <- ReactomeFIService(version)
     network <- new("ReactomeFINetwork", service = service)
-    network <- build(network, genes)
     return(network)
 }
