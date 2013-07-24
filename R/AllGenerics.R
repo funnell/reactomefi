@@ -97,8 +97,7 @@ setGeneric("queryAnnotateGeneSet",
 #' Query Annotate FI Network Module Gene Set
 #'
 #' Query the RESTful API to annotate a gene set from a FI network module with
-#'  enriched pathways, or GO
-#' terms
+#'  enriched pathways, or GO terms
 #'
 #' @param object ReactomeFIService object.
 #' @param module.nodes Data frame with network nodes (genes) and their module.
@@ -109,6 +108,23 @@ setGeneric("queryAnnotateModules",
            function(object, module.nodes,
                     type = c("Pathway", "BP", "CC", "MF")) {
     standardGeneric("queryAnnotateModules")
+})
+
+#' Query HotNet Analysis
+#'
+#' Query the RESTful API to do HotNet analysis. The ReactomeFI API implements
+#'  the "HotNet" algorithm for doing cancer mutation analysis developed by
+#'  Raphael's group at Brown University.
+#'
+#' @param object ReactomeFIService object.
+#' @param gene.scores Data frame containing gene, score pairs.
+#' @param delta Numeric delta value.
+#' @param fdr FDR cutoff.
+#' @param permutations Number of permutations.
+#' @return data.frame
+setGeneric("queryHotNetAnalysis",
+           function(object, gene.scores, delta, fdr, permutations) {
+    standardGeneric("queryHotNetAnalysis")
 })
 
 

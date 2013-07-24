@@ -233,3 +233,31 @@ setMethod("queryAnnotateModules",
     module.annotations$module <- module.annotations$module - 1
     return(module.annotations)
 })
+
+setMethod("queryHotNetAnalysis",
+          signature("ReactomeFIService", "data.frame", "numeric", "numeric",
+                    "numeric"),
+          function(object, gene.scores, delta, fdr, permutations) {
+    service.url <- paste(serviceURL(object), "hotnetAnalysis", sep="")
+    gene.score.str <- df2tsv(gene.scores)
+    query <- paste(gene.score.str, "\n", sep="")
+    query <- paste(query, "delta:", delta, "\n", sep="")
+    query <- paste(query, "fdrCutoff:", fdr, "\n", sep="")
+    query <- paste(query, "permutationNumber:", permutations, "\n", sep="")
+    doc <- getPostXML(service.url, query)
+
+    result <- xmlChildren(doc)$hotNetResult
+    delta <- as.integer(xmlValue(xmlChildren(result)$delta))
+    fdr.threshold <- as.numeric(xmlValue(xmlChildren(result)$fdrThreshold))
+    permutations <- as.integer(xmlValue(xmlChildren(result)$permutation))
+    auto.delta <- as.logical(xmlValue(xmlChildren(result)$useAutoDelta))
+    modules <- xpathApply(doc, "//modules", function(x) {
+        fdr <- as.numeric(xmlValue(xmlChildren(x)$fdr))
+        p.value <- as.numeric(xmlValue(xmlChildren(x)$pvalue))
+        genes <- unlist(xpathApply(x, "genes", xmlValue))
+        list(fdr = fdr, p.value = p.value, genes = genes)
+    })
+    return(list(delta = delta, fdr.threshold = fdr.threshold,
+                permutations = permutations, auto.delta = auto.delta,
+                modules = modules))
+})
