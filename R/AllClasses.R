@@ -76,7 +76,7 @@ ReactomeFINetwork <- function(version = c("2009", "2012")) {
 setClass("HotNetAnalysis",
     representation(service = "ReactomeFIService", genescores = "data.frame",
                    delta = "numeric", fdr.threshold = "numeric",
-                   permutations = "integer", auto.delta = "logical",
+                   permutations = "numeric", auto.delta = "logical",
                    modules = "list"),
     prototype(service = ReactomeFIService(), genescores = data.frame(),
               delta = 1e-4, fdr.threshold = 0.25, permutations = 100,
