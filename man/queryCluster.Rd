@@ -4,8 +4,9 @@
 \arguments{
   \item{object}{ReactomeFIService object.}
 
-  \item{fis}{Data frame of functional interactions (see
-  output of queryFIs).}
+  \item{fis}{Data frame of functional interactions. Should
+  be two columns per row indicating the two nodes in the
+  interaction}
 }
 \value{
   data.frame Each row contains the gene name and the module

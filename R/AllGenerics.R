@@ -89,6 +89,8 @@ setGeneric("queryCluster", function(object, fis) {
 #' @return data.frame Each row represents an annotation of the provided type
 #'  and includes related information such as the p-value and FDR generated
 #'  from enrichment analysis.
+#'
+#' @export
 setGeneric("queryAnnotateGeneSet",
            function(object, genes, type = c("Pathway", "BP", "CC", "MF")) {
     standardGeneric("queryAnnotateGeneSet")

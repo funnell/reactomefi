@@ -24,6 +24,7 @@ setClass("ReactomeFIService",
 #' @param version character version of Reactome FI network (2009 or 2012)
 #' @return ReactomeFIService
 #' 
+#' @export
 #' @rdname ReactomeFIService
 ReactomeFIService <- function(version = c("2009", "2012")) {
     version <- match.arg(version)
@@ -76,7 +77,7 @@ ReactomeFINetwork <- function(version = c("2009", "2012")) {
 setClass("HotNetAnalysis",
     representation(service = "ReactomeFIService", genescores = "data.frame",
                    delta = "numeric", fdr.threshold = "numeric",
-                   permutations = "integer", auto.delta = "logical",
+                   permutations = "numeric", auto.delta = "logical",
                    modules = "list"),
     prototype(service = ReactomeFIService(), genescores = data.frame(),
               delta = 1e-4, fdr.threshold = 0.25, permutations = 100,

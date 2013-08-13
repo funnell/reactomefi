@@ -2,11 +2,9 @@
 \alias{ReactomeFINetwork}
 \title{ReactomeFINetwork Class}
 \usage{
-  ReactomeFINetwork(genes, version = c("2009", "2012"))
+  ReactomeFINetwork(version = c("2009", "2012"))
 }
 \arguments{
-  \item{genes}{Character vector of gene names.}
-
   \item{version}{Version of ReactomeFI network (2009 or
   2012).}
 }

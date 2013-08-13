@@ -14,3 +14,4 @@ Collate:
     'AllGenerics.R'
     'ReactomeFIService.R'
     'ReactomeFINetwork.R'
+    'HotNetAnalysis.R'
