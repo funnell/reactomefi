@@ -237,13 +237,15 @@ setMethod("queryAnnotateModules",
 setMethod("queryHotNetAnalysis",
           signature("ReactomeFIService", "data.frame", "numeric", "numeric",
                     "numeric"),
-          function(object, gene.scores, delta, fdr, permutations) {
+          function(object, gene.scores, delta, fdr, permutations, auto.delta) {
     service.url <- paste(serviceURL(object), "hotnetAnalysis", sep="")
     gene.score.str <- df2tsv(gene.scores)
     query <- paste(gene.score.str, "\n", sep="")
-    query <- paste(query, "delta:", delta, "\n", sep="")
     query <- paste(query, "fdrCutoff:", fdr, "\n", sep="")
     query <- paste(query, "permutationNumber:", permutations, "\n", sep="")
+    if (!auto.delta) {
+        query <- paste(query, "delta:", delta, "\n", sep="")
+    }
     doc <- getPostXML(service.url, query)
 
     result <- xmlChildren(doc)$hotNetResult

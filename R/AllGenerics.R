@@ -125,7 +125,8 @@ setGeneric("queryAnnotateModules",
 #' @param permutations Number of permutations.
 #' @return data.frame
 setGeneric("queryHotNetAnalysis",
-           function(object, gene.scores, delta, fdr, permutations) {
+           function(object, gene.scores, delta, fdr, permutations,
+                    auto.delta) {
     standardGeneric("queryHotNetAnalysis")
 })
 
@@ -168,12 +169,12 @@ setGeneric("fis", function(object) standardGeneric("fis"))
 #' @export
 setGeneric("fis<-", function(object, value) standardGeneric("fis<-"))
 
-#' Retrieve FI Network Module Data
+#' Retrieve Network Module Data
 #'
-#' Retreive FI network module data.
+#' Retreive network module data.
 #'
-#' @param object ReactomeFINetwork object.
-#' @return data.frame Each row consists of a gene name and it's module id.
+#' @param object ReactomeFINetwork or HotNet object.
+#' @return data.frame
 #'
 #' @export
 setGeneric("modules", function(object) standardGeneric("modules"))
@@ -197,9 +198,10 @@ setGeneric("modules<-", function(object, value) standardGeneric("modules<-"))
 #' @param genes Character vector of gene names
 #' @return ReactomeFINetwork ReactomeFINetwork object with fis attribute set
 #'
+#' @genericMethods
 #' @export
-setGeneric("build", function(object, genes) standardGeneric("build"))
-
+setGeneric("build", function(object, ...) standardGeneric("build"))
+#setGeneric("build", function(object, genes) standardGeneric("build"))
 
 #' Cluster Network
 #'
@@ -247,3 +249,8 @@ setGeneric("annotateModules",
            function(object, type = c("Pathway", "BP", "CC", "MF")) {
     standardGeneric("annotateModules")
 })
+
+
+##
+# HotNetAnalysis generics
+##

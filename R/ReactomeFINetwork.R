@@ -26,7 +26,14 @@ setMethod("modules<-", signature("ReactomeFINetwork", "data.frame"),
     object
 })
 
-setMethod("build", signature("ReactomeFINetwork", "character"),
+#' Build FI Network
+#'
+#' Build FI network from a list of genes.
+#'
+#' @param object ReactomeFINetwork object.
+#' @param genes Character vector of gene names
+#' @return ReactomeFINetwork ReactomeFINetwork object with fis attribute set
+setMethod("build", signature("ReactomeFINetwork"),
           function(object, genes) {
     service <- service(object)
     fis(object) <- queryFIs(service, genes)

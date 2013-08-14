@@ -1,14 +1,13 @@
 \name{modules}
 \alias{modules}
-\title{Retrieve FI Network Module Data}
+\title{Retrieve Network Module Data}
 \arguments{
-  \item{object}{ReactomeFINetwork object.}
+  \item{object}{ReactomeFINetwork or HotNet object.}
 }
 \value{
-  data.frame Each row consists of a gene name and it's
-  module id.
+  data.frame
 }
 \description{
-  Retreive FI network module data.
+  Retreive network module data.
 }
 

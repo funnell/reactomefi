@@ -1,4 +1,4 @@
-export(HotNetAnalysis)
+export(HotNet)
 export(ReactomeFINetwork)
 export(ReactomeFIService)
 exportMethods("fis<-")

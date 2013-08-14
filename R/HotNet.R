@@ -31,3 +31,27 @@ maf2genescore <- function(maf) {
     return(genescore)
 }
 
+setMethod("modules", signature("HotNet"), function(object) {
+    object@modules
+})
+
+#' Build HotNet Network
+#'
+#' Build HotNet from a list of genes and scores.
+#'
+#' @param object HotNet object.
+#' @param genescores data.frame of genes and scores
+#' @param delta
+#' @param fdr.threshold
+#' @param permutations
+#' @param auto.delta
+#' @return HotNet Hotnet object with modules attribute set
+setMethod("build", signature("HotNet"),
+          function(object, genescores, delta = 1e-4, fdr.threshold = 0.25,
+                   permutations = 100, auto.delta = F) {
+    service <- service(object)
+    modules(object) <- queryHotNetAnalysis(service, genescores, delta,
+                                           fdr.threshold, permutations,
+                                           auto.delta)
+    return(object)
+})

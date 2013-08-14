@@ -69,12 +69,12 @@ ReactomeFINetwork <- function(version = c("2009", "2012")) {
 }
 
 
-#' HotNetAnalysis Class
+#' HotNet Class
 #'
 #' Represents the results of a HotNet analysis
 #'
-#' @rdname HotNetAnalysis
-setClass("HotNetAnalysis",
+#' @rdname HotNet
+setClass("HotNet",
     representation(service = "ReactomeFIService", genescores = "data.frame",
                    delta = "numeric", fdr.threshold = "numeric",
                    permutations = "numeric", auto.delta = "logical",
@@ -97,9 +97,9 @@ setClass("HotNetAnalysis",
     }
 )
 
-#' HotNetAnalysis
+#' HotNet
 #'
-#' HotNetAnalysis constructor
+#' HotNet constructor
 #'
 #' @param version Version of ReactomeFI network (2009 or 2012).
 #' @param genescores data.frame where the first column contains gene names and
@@ -110,19 +110,15 @@ setClass("HotNetAnalysis",
 #' @param permutations Number of permutations. Largest value is 1000.
 #' @param auto.delta If true, algorithm will select a delta value. This option
 #'  will make the analysis take more time to finish.
-#' @return HotNetAnalysis HotNetAnalysis S4 object containing the results of
+#' @return HotNet HotNet S4 object containing the results of
 #'  HotNet analysis. These results should be filtered before using them to
 #'  generate a network
 #'
 #' @export
-#' @rdname HotNetAnalysis
-HotNetAnalysis <- function(version = c("2009", "2012"), genescores,
-                           delta = 1e-4, fdr.threshold = 0.25,
-                           permutations = 100, auto.delta = F) {
+#' @rdname HotNet
+HotNet <- function(version = c("2009", "2012")) {
     version <- match.arg(version)
     service <- ReactomeFIService(version)
-    hotnet <- new("HotNetAnalysis", genescores = genescores, delta = delta,
-                  fdr.threshold = fdr.threshold, permutations = permutations,
-                  auto.delta = auto.delta)
+    hotnet <- new("HotNet", service=service)
     return(hotnet)
 }
