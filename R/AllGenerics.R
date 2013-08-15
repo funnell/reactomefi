@@ -132,18 +132,44 @@ setGeneric("queryHotNetAnalysis",
 
 
 ##
-# ReactomeFINetwork generics
+# Network generics
 ##
 
 #' Retrieve ReactomeFIService Object
 #'
 #' Retrieve the underlying ReactomeFIService object.
 #'
-#' @param object ReactomeFINetwork object.
+#' @param object ReactomeFINetwork or HotNet object.
 #' @return ReactomeFIService
 #'
 #' @export
 setGeneric("service", function(object)  standardGeneric("service"))
+
+#' Retrieve Network Module Data
+#'
+#' Retreive network module data.
+#'
+#' @param object ReactomeFINetwork or HotNet object.
+#' @return data.frame
+#'
+#' @export
+setGeneric("modules", function(object) standardGeneric("modules"))
+
+#' Set Network Module Data
+#'
+#' Set network module data. ReactomeFINetwork objects accept data.frames and
+#'  HotNet objects accept lists
+#'
+#' @param object ReactomeFINetwork or HotNet object.
+#' @param value Network module information
+#'
+#' @export
+setGeneric("modules<-", function(object, value) standardGeneric("modules<-"))
+
+
+##
+# ReactomeFINetwork generics
+##
 
 #' Retrieve FI Network Data
 #'
@@ -168,27 +194,6 @@ setGeneric("fis", function(object) standardGeneric("fis"))
 #'
 #' @export
 setGeneric("fis<-", function(object, value) standardGeneric("fis<-"))
-
-#' Retrieve Network Module Data
-#'
-#' Retreive network module data.
-#'
-#' @param object ReactomeFINetwork or HotNet object.
-#' @return data.frame
-#'
-#' @export
-setGeneric("modules", function(object) standardGeneric("modules"))
-
-#' Set FI Network Module Data
-#'
-#' Set FI network module data.
-#'
-#' @param object ReactomeFINetwork object.
-#' @param value Data frame containing network module information. Each row
-#'  consists of a gene name and module id.
-#'
-#' @export
-setGeneric("modules<-", function(object, value) standardGeneric("modules<-"))
 
 #' Build Network
 #'
@@ -254,3 +259,14 @@ setGeneric("annotateModules",
 ##
 # HotNetAnalysis generics
 ##
+
+#' Create HotNet ReacomeFI Network
+#'
+#' Create a ReactomeFI Network from a subset of the HotNet modules.
+#'
+#' @param object HotNet object.
+#' @param fdr False discovery rate threshold for HotNet modules
+#' @return ReactomeFINetwork
+#'
+#' @export
+setGeneric("subnet", function(object, fdr = 0.05) standardGeneric("subnet"))

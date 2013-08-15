@@ -75,19 +75,19 @@ ReactomeFINetwork <- function(version = c("2009", "2012")) {
 #'
 #' @rdname HotNet
 setClass("HotNet",
-    representation(service = "ReactomeFIService", genescores = "data.frame",
-                   delta = "numeric", fdr.threshold = "numeric",
+    representation(service = "ReactomeFIService", gene.scores = "data.frame",
+                   delta = "numeric", fdr = "numeric",
                    permutations = "numeric", auto.delta = "logical",
                    modules = "list"),
-    prototype(service = ReactomeFIService(), genescores = data.frame(),
-              delta = 1e-4, fdr.threshold = 0.25, permutations = 100,
-              auto.delta = F, modules = data.frame()),
+    prototype(service = ReactomeFIService(), gene.scores = data.frame(),
+              delta = 1e-4, fdr = 0.25, permutations = 100, auto.delta = F,
+              modules = data.frame()),
     validity = function(object) {
-        if (object@delta < 1) {
+        if (object@delta < 0) {
             return("delta must be positive")
         }
-        if (delta@fdr.threshold < 0 || delta@fdr.threshold > 1) {
-            return("fdr.threshold must be >= 0 and <= 1")
+        if (object@fdr < 0 || object@fdr > 1) {
+            return("fdr threshold must be >= 0 and <= 1")
         }
         if ((ceiling(object@permutations) != floor(object@permutations)) ||
             (object@permutations < 1) || (object@permutations > 1000)) {
@@ -101,12 +101,12 @@ setClass("HotNet",
 #'
 #' HotNet constructor
 #'
-#' @param version Version of ReactomeFI network (2009 or 2012).
-#' @param genescores data.frame where the first column contains gene names and
+#' @param gene.scores data.frame where the first column contains gene names and
 #'  the second column contains scores representing the proportion of samples
 #'  in which the gene is mutated.
+#' @param version Version of ReactomeFI network (2009 or 2012).
 #' @param delta HotNet delta value
-#' @param fdr.threshold
+#' @param fdr False discovery rate threshold
 #' @param permutations Number of permutations. Largest value is 1000.
 #' @param auto.delta If true, algorithm will select a delta value. This option
 #'  will make the analysis take more time to finish.
@@ -116,9 +116,15 @@ setClass("HotNet",
 #'
 #' @export
 #' @rdname HotNet
-HotNet <- function(version = c("2009", "2012")) {
+HotNet <- function(gene.scores, version = c("2009", "2012"), delta = 1e-4,
+                   fdr = 0.25, permutations = 100, auto.delta = F) {
     version <- match.arg(version)
     service <- ReactomeFIService(version)
-    hotnet <- new("HotNet", service=service)
+    res <- queryHotNetAnalysis(service, gene.scores, delta, fdr, permutations,
+                               auto.delta)
+    hotnet <- new("HotNet", service = service, gene.scores = gene.scores,
+                  delta = res$delta, fdr = res$fdr,
+                  permutations = res$permutations, auto.delta = res$auto.delta,
+                  modules = res$modules)
     return(hotnet)
 }

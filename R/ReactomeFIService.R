@@ -235,23 +235,23 @@ setMethod("queryAnnotateModules",
 })
 
 setMethod("queryHotNetAnalysis",
-          signature("ReactomeFIService", "data.frame", "numeric", "numeric",
-                    "numeric"),
+          signature("ReactomeFIService"),
           function(object, gene.scores, delta, fdr, permutations, auto.delta) {
-    service.url <- paste(serviceURL(object), "hotnetAnalysis", sep="")
+    service.url <- paste(serviceURL(object), "hotnetAnalysis", sep = "")
     gene.score.str <- df2tsv(gene.scores)
-    query <- paste(gene.score.str, "\n", sep="")
-    query <- paste(query, "fdrCutoff:", fdr, "\n", sep="")
-    query <- paste(query, "permutationNumber:", permutations, "\n", sep="")
+    query <- paste(gene.score.str, "\n", sep = "")
+    query <- paste(query, "fdrCutoff:", fdr, "\n", sep = "")
+    query <- paste(query, "permutationNumber:", permutations, "\n", sep = "")
     if (!auto.delta) {
-        query <- paste(query, "delta:", delta, "\n", sep="")
+        delta <- format(delta, scientific = F)
+        query <- paste(query, "delta:", delta, "\n", sep = "")
     }
     doc <- getPostXML(service.url, query)
 
     result <- xmlChildren(doc)$hotNetResult
-    delta <- as.integer(xmlValue(xmlChildren(result)$delta))
-    fdr.threshold <- as.numeric(xmlValue(xmlChildren(result)$fdrThreshold))
-    permutations <- as.integer(xmlValue(xmlChildren(result)$permutation))
+    delta <- as.numeric(xmlValue(xmlChildren(result)$delta))
+    fdr <- as.numeric(xmlValue(xmlChildren(result)$fdrThreshold))
+    permutations <- as.numeric(xmlValue(xmlChildren(result)$permutation))
     auto.delta <- as.logical(xmlValue(xmlChildren(result)$useAutoDelta))
     modules <- xpathApply(doc, "//modules", function(x) {
         fdr <- as.numeric(xmlValue(xmlChildren(x)$fdr))
@@ -259,7 +259,6 @@ setMethod("queryHotNetAnalysis",
         genes <- unlist(xpathApply(x, "genes", xmlValue))
         list(fdr = fdr, p.value = p.value, genes = genes)
     })
-    return(list(delta = delta, fdr.threshold = fdr.threshold,
-                permutations = permutations, auto.delta = auto.delta,
-                modules = modules))
+    return(list(delta = delta, fdr = fdr, permutations = permutations,
+                auto.delta = auto.delta, modules = modules))
 })

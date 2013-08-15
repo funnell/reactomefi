@@ -6,7 +6,7 @@
 #'
 #' @param maf NCI Mutation Annotation File.
 #' @return data.frame Two column data.frame containing gene names and scores.
-maf2genescore <- function(maf) {
+maf2genescores <- function(maf) {
     allowed.types <- c("frame_shift_del", "in_frame_del", "in_frame_ins",
                        "frame_shift_ins", "nonsense_mutation",
                        "nonstop_mutation", "missense_mutation",
@@ -21,37 +21,39 @@ maf2genescore <- function(maf) {
 
     num.samples <- length(unique(maf$Tumor_Sample_Barcode)) 
     genes <- unique(as.character(maf$Hugo_Symbol))
-    genescore <- data.frame(gene=genes, score=rep(0, length(genes)))
+    genescores <- data.frame(gene=genes, score=rep(0, length(genes)))
     for (gene in genes) {
         gene.samples <- subset(maf, Hugo_Symbol == gene, "Tumor_Sample_Barcode")
         num.gene.samples <- nrow(gene.samples)
         score <- num.gene.samples / num.samples
-        genescore[genescore["gene"] == gene, "score"] <- score
+        genescores[genescores["gene"] == gene, "score"] <- score
     }
-    return(genescore)
+    return(genescores)
 }
 
-setMethod("modules", signature("HotNet"), function(object) {
-    object@modules
+setMethod("service", signature("HotNet"), function(object) {
+    return(object@service)
 })
 
-#' Build HotNet Network
-#'
-#' Build HotNet from a list of genes and scores.
-#'
-#' @param object HotNet object.
-#' @param genescores data.frame of genes and scores
-#' @param delta
-#' @param fdr.threshold
-#' @param permutations
-#' @param auto.delta
-#' @return HotNet Hotnet object with modules attribute set
-setMethod("build", signature("HotNet"),
-          function(object, genescores, delta = 1e-4, fdr.threshold = 0.25,
-                   permutations = 100, auto.delta = F) {
-    service <- service(object)
-    modules(object) <- queryHotNetAnalysis(service, genescores, delta,
-                                           fdr.threshold, permutations,
-                                           auto.delta)
-    return(object)
+setMethod("modules", signature("HotNet"), function(object) {
+    return(object@modules)
+})
+
+setMethod("subnet", signature("HotNet"), function(object, fdr = 0.05) {
+    mask <- sapply(modules(object), function(x) x$fdr <= fdr)
+    sub.mods <- modules(object)[mask]
+    if (length(sub.mods) == 0) {
+        return(new("ReactomeFINetwork", service = service(object)))
+    }
+
+    mod.genes <- data.frame()
+    for (i in seq(length(sub.mods))) {
+        genes.df <- data.frame(gene = sub.mods[[i]]$genes, module = i,
+                               stringsAsFactors=F)
+        mod.genes <- rbind(mod.genes, genes.df)
+    }
+    network <- new("ReactomeFINetwork", service = service(object))
+    network <- build(network, mod.genes$gene)
+    modules(network) <- mod.genes
+    return(network)
 })
