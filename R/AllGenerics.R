@@ -203,10 +203,8 @@ setGeneric("fis<-", function(object, value) standardGeneric("fis<-"))
 #' @param genes Character vector of gene names
 #' @return ReactomeFINetwork ReactomeFINetwork object with fis attribute set
 #'
-#' @genericMethods
 #' @export
-setGeneric("build", function(object, ...) standardGeneric("build"))
-#setGeneric("build", function(object, genes) standardGeneric("build"))
+setGeneric("build", function(object, genes) standardGeneric("build"))
 
 #' Cluster Network
 #'

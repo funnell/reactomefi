@@ -1,14 +1,13 @@
 \name{modules<-}
 \alias{modules<-}
-\title{Set FI Network Module Data}
+\title{Set Network Module Data}
 \arguments{
-  \item{object}{ReactomeFINetwork object.}
+  \item{object}{ReactomeFINetwork or HotNet object.}
 
-  \item{value}{Data frame containing network module
-  information. Each row consists of a gene name and module
-  id.}
+  \item{value}{Network module information}
 }
 \description{
-  Set FI network module data.
+  Set network module data. ReactomeFINetwork objects accept
+  data.frames and HotNet objects accept lists
 }
 

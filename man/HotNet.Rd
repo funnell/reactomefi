@@ -2,20 +2,22 @@
 \alias{HotNet}
 \title{HotNet Class}
 \usage{
-  HotNet(version = c("2009", "2012"))
+  HotNet(gene.scores, version = c("2009", "2012"),
+    delta = 1e-04, fdr = 0.25, permutations = 100,
+    auto.delta = F)
 }
 \arguments{
-  \item{version}{Version of ReactomeFI network (2009 or
-  2012).}
-
-  \item{genescores}{data.frame where the first column
+  \item{gene.scores}{data.frame where the first column
   contains gene names and the second column contains scores
   representing the proportion of samples in which the gene
   is mutated.}
 
+  \item{version}{Version of ReactomeFI network (2009 or
+  2012).}
+
   \item{delta}{HotNet delta value}
 
-  \item{fdr.threshold}{}
+  \item{fdr}{False discovery rate threshold}
 
   \item{permutations}{Number of permutations. Largest value
   is 1000.}

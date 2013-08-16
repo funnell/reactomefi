@@ -82,3 +82,23 @@ test_that("queryAnnotateModules returns annotations", {
     expect_that(typeof(annotations$fdr), equals("double"))
     expect_that(typeof(annotations$hits), equals("character"))
 })
+
+test_that("queryHotNetAnalysis returns modules", {
+    mod.genes <- list(c("ING4", "MSH6", "NBN", "MSH2", "AIFM1", "TP53", "MLH1",
+                        "CHEK1", "TRIM24", "TRRAP", "ATM", "TOP1", "BAX",
+                        "PMS2", "MDM4", "EP400"),
+                      c("PIK3C2B", "PDGFRA", "PDGFRB", "PIK3CA", "KIT", "ZEB1",
+                        "PTEN", "PIK3R1"),
+                      c("KLF6", "BCL11A","KLF4"), c("PRKD2", "NF1", "DST"),
+                      c("PAX5", "MYCN"), c("PTCH1", "SHH"),
+                      c("NOTCH1", "DTX3"), c("EPHA7", "EPHA2"))
+    data(GlioblastomaMAF)
+    gene.scores <- maf2genescores(glioblastoma.maf)
+    hotnet <- HotNet(gene.scores, "2012")
+    res.mod.genes <- lapply(modules(hotnet), function(x) x$genes)
+    
+    expect_that(res.mod.genes, equals(mod.genes))
+
+    mask <- sapply(modules(hotnet), function(x) x$fdr <= 0.25)
+    expect_that(res.mod.genes[mask], equals(mod.genes[1:2]))
+})
