@@ -45,7 +45,12 @@ extractFIs <- function(doc) {
         data.frame(first.protein = first.protein,
                    second.protein = second.protein)
     })
-    return(do.call(rbind, interactions))
+    fis <- do.call(rbind, interactions)
+    if (is.null(fis)) {
+        fis <- data.frame(first.protein = character(0),
+                          second.protein = character(0))
+    }
+    return(fis)
 }
 
 setMethod("queryFIs",

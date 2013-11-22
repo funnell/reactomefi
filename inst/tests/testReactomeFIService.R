@@ -3,6 +3,14 @@ context("ReactomeFIService")
 
 service <- new("ReactomeFIService")
 
+test_that("queryFIs returns empty data.frame when no FIs found", {
+    genes <- c("FOO", "BAR")
+    fis <- data.frame(
+        first.protein = character(0),
+        second.protein = character(0))
+    expect_that(queryFIs(service, genes), equals(fis))
+})
+
 test_that("queryFIs constructs a network", {
     genes <- c("TP53", "PTEN", "EGFR")
     fis <- data.frame(
