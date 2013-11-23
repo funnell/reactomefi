@@ -5,10 +5,7 @@ service <- new("ReactomeFIService")
 
 test_that("queryFIs returns empty data.frame when no FIs found", {
     genes <- c("FOO", "BAR")
-    fis <- data.frame(
-        first.protein = character(0),
-        second.protein = character(0))
-    expect_that(queryFIs(service, genes), equals(fis))
+    expect_that(queryFIs(service, genes), equals(data.frame()))
 })
 
 test_that("queryFIs constructs a network", {
@@ -70,6 +67,12 @@ test_that("queryAnnotateGeneSet returns annotations", {
     expect_that(typeof(annotations$p.value), equals("double"))
     expect_that(typeof(annotations$fdr), equals("double"))
     expect_that(typeof(annotations$hits), equals("character"))
+})
+
+test_that("queryAnnotateGeneSet returns empty data.frame when no annots", {
+    genes <- c("FOO", "BAR")
+    annotations <- queryAnnotateGeneSet(service, genes, "Pathway")
+    expect_that(annotations, equals(data.frame()))
 })
 
 test_that("queryAnnotateModules returns annotations", {

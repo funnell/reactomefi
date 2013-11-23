@@ -35,8 +35,10 @@ setMethod("modules<-", signature("ReactomeFINetwork", "data.frame"),
 #' @return ReactomeFINetwork ReactomeFINetwork object with fis attribute set
 setMethod("build", signature("ReactomeFINetwork"),
           function(object, genes) {
-    service <- service(object)
-    fis(object) <- queryFIs(service, genes)
+    if (length(genes) > 1) {
+        service <- service(object)
+        fis(object) <- queryFIs(service, genes)
+    }
     object
 })
 

@@ -46,10 +46,7 @@ extractFIs <- function(doc) {
                    second.protein = second.protein)
     })
     fis <- do.call(rbind, interactions)
-    if (is.null(fis)) {
-        fis <- data.frame(first.protein = character(0),
-                          second.protein = character(0))
-    }
+    if (is.null(fis)) return(data.frame())
     return(fis)
 }
 
@@ -175,8 +172,8 @@ extractAnnotations <- function(xml.node) {
                                 collapse = ","),
                    stringsAsFactors = FALSE)
     })
-    if (length(annotations) == 0) return(NA)
     annotations <- do.call(rbind, annotations)
+    if (is.null(annotations)) return(data.frame())
     annotations$hit.num <- as.numeric(annotations$hit.num)
     annotations$number.in.topic <- as.numeric(annotations$number.in.topic)
     annotations$ratio.of.topic <- as.numeric(annotations$ratio.of.topic)
