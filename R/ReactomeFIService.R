@@ -6,9 +6,10 @@ setMethod("serviceURL", signature("ReactomeFIService"), function(object) {
     version <- version(object)
     base.url = "http://reactomews.oicr.on.ca:8080/"
     if (version == "2012") {
-        return(paste(base.url, "caBigR3WebApp2012/FIService/network/", sep=""))
+        return(paste(base.url, "caBigR3WebApp2012/FIService/network/",
+                     sep = ""))
     } 
-    return(paste(base.url, "caBigR3WebApp/FIService/network/", sep=""))
+    return(paste(base.url, "caBigR3WebApp/FIService/network/", sep = ""))
 })
 
 #' Get POST Query XML Response
@@ -53,7 +54,7 @@ extractFIs <- function(doc) {
 setMethod("queryFIs",
           signature("ReactomeFIService", "character"),
           function(object, genes) {
-    service.url <- paste(serviceURL(object), "queryFIs", sep="")
+    service.url <- paste(serviceURL(object), "queryFIs", sep = "")
     genes.str <- paste(genes, collapse = "\t")
     doc <- getPostXML(service.url, genes.str)
     return(extractFIs(doc))
@@ -62,7 +63,7 @@ setMethod("queryFIs",
 setMethod("queryBuildNetwork",
           signature("ReactomeFIService", "character"),
           function(object, genes) {
-    service.url <- paste(serviceURL(object), "buildNetwork", sep="")
+    service.url <- paste(serviceURL(object), "buildNetwork", sep = "")
     genes.str <- paste(genes, collapse = "\t")
     doc <- getPostXML(service.url, genes.str)
     return(extractFIs(doc))
@@ -71,7 +72,7 @@ setMethod("queryBuildNetwork",
 setMethod("queryFIsBetween",
           signature("ReactomeFIService", "data.frame"),
           function(object, gene.pairs) {
-    service.url <- paste(serviceURL(object), "queryFIsBetween", sep="")
+    service.url <- paste(serviceURL(object), "queryFIsBetween", sep = "")
     gene.pairs <- as.matrix(gene.pairs)
     first.str <- paste(gene.pairs[, 1], collapse = ",")
     second.str <- paste(gene.pairs[, 2], collapse = ",")
@@ -105,7 +106,7 @@ extractProteinInfo <- function(protein.node) {
 setMethod("queryEdge",
           signature("ReactomeFIService", "character", "character"),
           function(object, name1, name2) {
-    service.url <- paste(serviceURL(object), "queryEdge", sep="")
+    service.url <- paste(serviceURL(object), "queryEdge", sep = "")
     edge.str <- paste(name1, name2, sep = "\t")
     doc <- getPostXML(service.url, edge.str)
     first.prot <- getNodeSet(doc, "//firstProtein", fun = extractProteinInfo)
@@ -124,7 +125,7 @@ setMethod("queryEdge",
 fis2str <- function(fis) {
     fis[, "first.protein"] <- as.character(fis[, "first.protein"])
     fis[, "second.protein"] <- as.character(fis[, "second.protein"])
-    fis <- cbind(data.frame(id=1:nrow(fis)), fis)
+    fis <- cbind(data.frame(id = 1:nrow(fis)), fis)
 
     fis.list = c()
     for (i in 1:nrow(fis)) {
@@ -135,17 +136,17 @@ fis2str <- function(fis) {
         } else {
             fi.str <- paste(second.protein, first.protein, sep = "\t")
         }
-        fi.str <- paste(fis[i, "id"], fi.str, sep="\t")
+        fi.str <- paste(fis[i, "id"], fi.str, sep = "\t")
         fis.list <- c(fis.list, fi.str)
     }
-    fis.str <- paste(fis.list, collapse="\n")
+    fis.str <- paste(fis.list, collapse = "\n")
     return(fis.str)
 }
 
 setMethod("queryCluster",
           signature("ReactomeFIService", "data.frame"),
           function(object, fis) {
-    service.url <- paste(serviceURL(object), "cluster", sep="")
+    service.url <- paste(serviceURL(object), "cluster", sep = "")
     fis.str <- fis2str(fis)
     doc <- getPostXML(service.url, fis.str)
     modules <- xpathApply(doc, "//geneClusterPairs", function(x) {
@@ -173,7 +174,9 @@ extractAnnotations <- function(xml.node) {
                    stringsAsFactors = FALSE)
     })
     annotations <- do.call(rbind, annotations)
+
     if (is.null(annotations)) return(data.frame())
+
     annotations$hit.num <- as.numeric(annotations$hit.num)
     annotations$number.in.topic <- as.numeric(annotations$number.in.topic)
     annotations$ratio.of.topic <- as.numeric(annotations$ratio.of.topic)
@@ -187,7 +190,8 @@ setMethod("queryAnnotateGeneSet",
           signature("ReactomeFIService", "character", "character"),
           function(object, genes, type = c("Pathway", "BP", "CC", "MF")) {
     type <- match.arg(type)
-    service.url <- paste(serviceURL(object), "annotateGeneSet/", type, sep="")
+    service.url <- paste(serviceURL(object), "annotateGeneSet/", type,
+                         sep = "")
     genes.str <- paste(genes, collapse = "\n")
     doc <- getPostXML(service.url, genes.str)
     annot.node <- xmlChildren(doc)$moduleGeneSetAnnotations
@@ -219,7 +223,8 @@ setMethod("queryAnnotateModules",
           function(object, module.nodes,
                    type = c("Pathway", "BP", "CC", "MF")) {
     type <- match.arg(type)
-    service.url <- paste(serviceURL(object), "annotateModules/", type, sep="")
+    service.url <- paste(serviceURL(object), "annotateModules/", type,
+                         sep = "")
     query <- df2tsv(module.nodes)
     doc <- getPostXML(service.url, query)
     module.annotations <- xpathApply(doc, "//moduleGeneSetAnnotation",
