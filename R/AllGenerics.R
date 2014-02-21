@@ -248,6 +248,7 @@ setGeneric("annotate",
 #'  for the module the annotation corresponds to.
 #'
 #' @importFrom plyr ddply
+#' @importFrom plyr .
 #' @export
 setGeneric("annotateModules",
            function(object, type = c("Pathway", "BP", "CC", "MF"),
