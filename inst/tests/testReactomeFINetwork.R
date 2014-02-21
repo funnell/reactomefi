@@ -1,4 +1,4 @@
-context("ReactomeFIService")
+context("ReactomeFINetwork")
 
 
 network <- ReactomeFINetwork("2012")

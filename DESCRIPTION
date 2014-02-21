@@ -6,9 +6,12 @@ Version: 0.0.1
 Maintainer: Tyler Funnell <tyler.funnell@gmail.com>
 Author: Tyler Funnell <tyler.funnell@gmail.com>
 Imports:
+    methods,
     plyr,
     RCurl,
     XML
+Suggests:
+    testthat
 License: BSD
 Collate:
     'AllClasses.R'
