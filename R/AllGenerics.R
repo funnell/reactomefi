@@ -247,9 +247,11 @@ setGeneric("annotate",
 #'  will be the same as the \code{\link{annotate}} method plus another column
 #'  for the module the annotation corresponds to.
 #'
+#' @importFrom plyr ddply
 #' @export
 setGeneric("annotateModules",
-           function(object, type = c("Pathway", "BP", "CC", "MF")) {
+           function(object, type = c("Pathway", "BP", "CC", "MF"),
+                    min.module.size = 1) {
     standardGeneric("annotateModules")
 })
 

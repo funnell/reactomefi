@@ -6,6 +6,7 @@ Version: 0.0.1
 Maintainer: Tyler Funnell <tyler.funnell@gmail.com>
 Author: Tyler Funnell <tyler.funnell@gmail.com>
 Imports:
+    plyr,
     RCurl,
     XML
 License: BSD

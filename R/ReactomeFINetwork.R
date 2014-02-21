@@ -66,14 +66,18 @@ setMethod("annotate", signature("ReactomeFINetwork", "character"),
 })
 
 setMethod("annotateModules", signature("ReactomeFINetwork"),
-          function(object, type = c("Pathway", "BP", "CC", "MF")) {
+          function(object, type = c("Pathway", "BP", "CC", "MF"),
+                   min.module.size = 1) {
     if (nrow(modules(object)) == 0) {
         message <- paste("No FI network module data found. Please cluster the",
                          "network first.")
         warning(message)
         return(object)
     }
+    module.size.filter <- function(x) { if (nrow(x) >= min.module.size) x }
+    network.modules <- ddply(modules(object), .(module), module.size.filter)
+
     type <- match.arg(type)
     service <- service(object)
-    return(queryAnnotateModules(service, modules(object), type))
+    return(queryAnnotateModules(service, network.modules, type))
 })
