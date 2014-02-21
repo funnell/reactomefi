@@ -33,7 +33,7 @@ setMethod("modules<-", signature("ReactomeFINetwork", "data.frame"),
 #' @param object ReactomeFINetwork object.
 #' @param genes Character vector of gene names
 #' @return ReactomeFINetwork ReactomeFINetwork object with fis attribute set
-setMethod("build", signature("ReactomeFINetwork"),
+setMethod("build", signature("ReactomeFINetwork", "character"),
           function(object, genes) {
     if (length(genes) > 1) {
         service <- service(object)
