@@ -56,15 +56,25 @@ setClass("ReactomeFINetwork",
 #' ReactomeFINetwork constructor
 #'
 #' @param version Version of ReactomeFI network (2009 or 2012).
-#' @return ReactomeFINetwork ReactomeFINetwork S4 object with FI network
-#'  generated from gene list.
+#' @param genes Character vector of gene names.
+#' @param cluster Set to TRUE to cluster the network if gene names have been
+#'  provided (default FALSE).
+#' @return ReactomeFINetwork ReactomeFINetwork S4 object
 #'
 #' @export
 #' @rdname ReactomeFINetwork
-ReactomeFINetwork <- function(version = c("2009", "2012")) {
+ReactomeFINetwork <- function(version = c("2009", "2012"), genes = character(),
+                              cluster = FALSE) {
     version <- match.arg(version)
     service <- ReactomeFIService(version)
     network <- new("ReactomeFINetwork", service = service)
+
+    if (length(genes) > 0) {
+        network <- build(network, genes)
+        if (cluster) {
+            network <- cluster(network)
+        }
+    }
     return(network)
 }
 
