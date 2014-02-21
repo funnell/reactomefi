@@ -44,7 +44,7 @@ extractFIs <- function(doc) {
         first.protein <- xmlValue(xmlChildren(info$firstProtein)$name)
         second.protein <- xmlValue(xmlChildren(info$secondProtein)$name)
         data.frame(first.protein = first.protein,
-                   second.protein = second.protein)
+                   second.protein = second.protein, stringsAsFactors = FALSE)
     })
     fis <- do.call(rbind, interactions)
     if (is.null(fis)) return(data.frame())
@@ -99,7 +99,8 @@ extractProteinInfo <- function(protein.node) {
                        db.name = db.name,
                        short.name = short.name,
                        name = name,
-                       sequence = prot.seq)
+                       sequence = prot.seq,
+                       stringsAsFactors = FALSE)
     return(info)
 }
 
@@ -153,7 +154,7 @@ setMethod("queryCluster",
         info <- xmlChildren(x)
         module <- xmlValue(info$cluster)
         gene <- xmlValue(info$geneId)
-        data.frame(gene = gene, module = module, stringsAsFactors = F)
+        data.frame(gene = gene, module = module, stringsAsFactors = FALSE)
     })
     modules <- do.call(rbind, modules)
     modules$module <- as.numeric(modules$module)
