@@ -12,7 +12,8 @@ test_that("queryFIs constructs a network", {
     genes <- c("TP53", "PTEN", "EGFR")
     fis <- data.frame(
         first.protein = c("EGFR", "PTEN"),
-        second.protein = c("TP53", "TP53"))
+        second.protein = c("TP53", "TP53"),
+        stringsAsFactors = FALSE)
     expect_that(queryFIs(service, genes), equals(fis))
 })
 
@@ -20,7 +21,8 @@ test_that("queryBuildNetwork constructs a network with linkers", {
     genes <- c("BECN1", "RAE1")
     fis <- data.frame(
         first.protein = c("XPO1", "XPO1"),
-        second.protein = c("BECN1", "RAE1"))
+        second.protein = c("BECN1", "RAE1"),
+        stringsAsFactors = FALSE)
     expect_that(queryBuildNetwork(service, genes), equals(fis))
 })
 
@@ -38,10 +40,12 @@ test_that("queryCluster clusters a network", {
 test_that("queryFIsBetween returns FIs between certain genes", {
     gene.pairs <- data.frame(
         first.protein = c("EGFR", "PTEN", "EGFR"),
-        second.protein = c("TP53", "TP53", "PTEN"))
+        second.protein = c("TP53", "TP53", "PTEN"),
+        stringsAsFactors = FALSE)
     fis <- data.frame(
         first.protein = c("EGFR", "PTEN"),
-        second.protein = c("TP53", "TP53"))
+        second.protein = c("TP53", "TP53"),
+        stringsAsFactors = FALSE)
     expect_that(queryFIsBetween(service, gene.pairs), equals(fis))
 })
 
@@ -49,7 +53,8 @@ test_that("queryEdge returns detailed information for an edge", {
     info.subset <- data.frame(
         accession = c("P00533", "P04637"),
         db.name = c("UniProt", "UniProt"),
-        short.name = c("EGFR", "TP53"))
+        short.name = c("EGFR", "TP53"),
+        stringsAsFactors = FALSE)
     subset.cols <- c("accession", "db.name", "short.name")
     expect_that(queryEdge(service, "TP53", "EGFR")[subset.cols],
                 equals(info.subset))
