@@ -8,6 +8,8 @@ Author: Tyler Funnell <tyler.funnell@gmail.com>
 Imports:
     methods,
     plyr,
+    ggplot2,
+    sna,
     RCurl,
     XML
 Suggests:

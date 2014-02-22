@@ -81,3 +81,123 @@ setMethod("annotateModules", signature("ReactomeFINetwork"),
     service <- service(object)
     return(queryAnnotateModules(service, network.modules, type))
 })
+
+#' Layout ReactomeFINetwork
+#'
+#' Retrieve the coordinates for the network vertices according to the
+#'  specified layout algorithm
+#'
+#' @param adj.mat Adjacency matrix
+#' @param layout Layout algorithm as defined by sna's gplot.layout
+#' @return data.frame DataFrame containing x and y coordinates of network
+#'  vertices
+layout.net <- function(adj.mat, layout) {
+    layout.fname <- paste0("gplot.layout.", layout)
+    if (exists(layout.fname)) {
+        layout.f <- get(layout.fname)
+        vertices <- layout.f(adj.mat, NULL)
+        vertices <- data.frame(vertices)
+        colnames(vertices) <- c("x", "y")
+    } else {
+        warning("invalid network layout type")
+        vertices <- data.frame(x = numeric(), y = numeric())
+    }
+    return(vertices)
+}
+
+#' ggplot Network
+#'
+#' Plot network edges and vertices using ggplot
+#'
+#' @param vertex.coords DataFrame containing vertex x,y coordinates, gene
+#'  names, and optionally module labels.
+#' @param edge.coords DataFrame containing edge line end coordinates
+#' @param colour.modules Set to TRUE to colour nodes according to their module
+#' @param node.alpha Value between 0 and 1 indicating nodes' transparency
+#' @param edge.alpha Value between 0 and 1 indicating the edges' transparency
+#' @return ggplot ggplot object
+ggplot.net <- function(vertex.coords, edge.coords, colour.modules, node.alpha,
+                       edge.alpha) {
+    if (colour.modules) {
+        vertex.coords["module"] <- factor(vertex.coords$module)
+        node.aes <- aes(colour = module)
+    } else {
+        node.aes <- aes()
+    }
+
+    gg <- ggplot(vertex.coords, aes(x, y))
+    gg <- gg + geom_point(node.aes, size = 10, alpha = node.alpha)
+    gg <- gg + geom_text(aes(label = gene))
+    gg <- gg + geom_line(aes(x, y, group = edge.id), data = edge.coords,
+                         alpha = edge.alpha)
+    gg <- gg + theme_minimal()
+    gg <- gg + theme(panel.grid = element_blank(),
+                     axis.ticks = element_blank(),
+                     axis.line  = element_blank(),
+                     axis.text  = element_blank(),
+                     axis.title = element_blank())
+    gg <- gg + scale_x_continuous(expand = c(0.10, 0))
+    return(gg)
+}
+
+#' Plot Network
+#'
+#' Plot the interaction network.
+#'
+#' @param object ReactomeFINetwork object
+#' @param color.modules Set to FALSE to turn off module colouring
+#' @return ggplot ggplot object containing a visualization of the given
+#'  network
+#'
+#' @importFrom sna gplot.layout.adj
+#' @importFrom sna gplot.layout.circle
+#' @importFrom sna gplot.layout.circrand
+#' @importFrom sna gplot.layout.eigen
+#' @importFrom sna gplot.layout.fruchtermanreingold
+#' @importFrom sna gplot.layout.geodist
+#' @importFrom sna gplot.layout.hall
+#' @importFrom sna gplot.layout.kamadakawai
+#' @importFrom sna gplot.layout.mds
+#' @importFrom sna gplot.layout.princoord
+#' @importFrom sna gplot.layout.random
+#' @importFrom sna gplot.layout.rmds
+#' @importFrom sna gplot.layout.segeo
+#' @importFrom sna gplot.layout.seham
+#' @importFrom sna gplot.layout.spring
+#' @importFrom sna gplot.layout.springrepulse
+#' @importFrom sna gplot.layout.target
+#' @import ggplot2
+#'
+#' @export
+setMethod("plot", signature(x = "ReactomeFINetwork", y = "missing"),
+           function(x, layout = "kamadakawai", colour.modules = TRUE,
+                    node.alpha = 0.5, edge.alpha = 0.25) {
+    edgelist <- fis(x)
+    genes <- unlist(edgelist)
+    genes <- genes[!duplicated(genes)]
+
+    edgelist["first.protein"] <- factor(edgelist$first.protein, levels=genes)
+    edgelist["first.protein"] <- as.numeric(edgelist$first.protein)
+    edgelist["second.protein"] <- factor(edgelist$second.protein, levels=genes)
+    edgelist["second.protein"] <- as.numeric(edgelist$second.protein)
+    edgelist <- as.matrix(edgelist)
+
+    adj.mat <- matrix(0, length(genes), length(genes))
+    adj.mat[edgelist] <- 1
+
+    vertex.coords <- layout.net(adj.mat, layout)
+    vertex.coords["gene"] <- genes
+
+    edge.coords1 <- vertex.coords[edgelist[, "first.protein"], ]
+    edge.coords2 <- vertex.coords[edgelist[, "second.protein"], ]
+    edge.coords <- rbind(edge.coords1, edge.coords2)
+    edge.coords["edge.id"] <- rep(1:nrow(edgelist), 2)
+
+    if (colour.modules && nrow(modules(x)) > 0) {
+        vertex.coords <- merge(vertex.coords, modules(x))
+    }
+
+    gg <- ggplot.net(vertex.coords, edge.coords, colour.modules, node.alpha,
+                     edge.alpha)
+    return(gg)
+})

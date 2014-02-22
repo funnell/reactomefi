@@ -25,3 +25,39 @@ test_that("network cluster properly filters modules below size threshold", {
     expect_that(length(enriched.modules), equals(1))
     expect_that(enriched.modules, equals(c(0)))
 })
+
+test_that("networks can be plotted", {
+    genes <- c("TP53", "PTEN", "EGFR", "ATM", "CLTCL1", "GRM8", "GRM7")
+    test.network <- build(network, genes)
+
+    gg <- plot(test.network)
+    expect_equal(class(gg), c("gg", "ggplot"))
+    
+    base <- ggplot_build(gg)
+    expect_equal(length(base$data), 3)
+    expect_equal(nrow(base$data[[1]]), 7)
+    expect_equal(nrow(base$data[[2]]), 7)
+    expect_equal(nrow(base$data[[3]]), 12)
+    expect_equal(unique(base$data[[1]]$group), 1)
+
+    test.network <- cluster(test.network)
+    gg <- plot(test.network)
+    expect_equal(class(gg), c("gg", "ggplot"))
+    
+    base <- ggplot_build(gg)
+    expect_equal(length(base$data), 3)
+    expect_equal(nrow(base$data[[1]]), 7)
+    expect_equal(nrow(base$data[[2]]), 7)
+    expect_equal(nrow(base$data[[3]]), 12)
+    expect_equal(unique(base$data[[1]]$group), c(1, 2))
+
+    gg <- plot(test.network, colour.modules = FALSE)
+    expect_equal(class(gg), c("gg", "ggplot"))
+    
+    base <- ggplot_build(gg)
+    expect_equal(length(base$data), 3)
+    expect_equal(nrow(base$data[[1]]), 7)
+    expect_equal(nrow(base$data[[2]]), 7)
+    expect_equal(nrow(base$data[[3]]), 12)
+    expect_equal(unique(base$data[[1]]$group), 1)
+})
