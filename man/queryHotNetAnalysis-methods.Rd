@@ -1,5 +1,7 @@
+\docType{methods}
 \name{queryHotNetAnalysis}
 \alias{queryHotNetAnalysis}
+\alias{queryHotNetAnalysis,ReactomeFIService-method}
 \title{Query HotNet Analysis}
 \arguments{
   \item{object}{ReactomeFIService object.}

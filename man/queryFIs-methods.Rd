@@ -1,5 +1,7 @@
+\docType{methods}
 \name{queryFIs}
 \alias{queryFIs}
+\alias{queryFIs,ReactomeFIService,character-method}
 \title{Query Functional Interactions}
 \arguments{
   \item{object}{ReactomeFIService object.}

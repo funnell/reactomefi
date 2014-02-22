@@ -1,5 +1,7 @@
+\docType{methods}
 \name{annotate}
 \alias{annotate}
+\alias{annotate,ReactomeFINetwork,character-method}
 \title{Annotate Network}
 \arguments{
   \item{object}{ReactomeFINetwork object.}

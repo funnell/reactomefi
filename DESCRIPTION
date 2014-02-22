@@ -21,3 +21,4 @@ Collate:
     'ReactomeFIService.R'
     'ReactomeFINetwork.R'
     'HotNet.R'
+    'reactomefi.R'

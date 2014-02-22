@@ -1,5 +1,7 @@
+\docType{methods}
 \name{annotateModules}
 \alias{annotateModules}
+\alias{annotateModules,ReactomeFINetwork-method}
 \title{Annotate Network Modules}
 \arguments{
   \item{object}{ReactomeFINetwork object.}

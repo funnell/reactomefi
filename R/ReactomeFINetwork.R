@@ -1,25 +1,37 @@
+#' @rdname version-methods
+#' @aliases version,ReactomeFINetwork-method
 setMethod("version", signature("ReactomeFINetwork"), function(object) {
     return(version(object@service))
 })
 
+#' @rdname service-methods
+#' @aliases service,ReactomeFINetwork-method
 setMethod("service", signature("ReactomeFINetwork"), function(object) {
     return(object@service)
 })
 
+#' @rdname fis-methods
+#' @aliases fis,ReactomeFINetwork-method
 setMethod("fis", signature("ReactomeFINetwork"), function(object) {
     object@fis
 })
 
+#' @rdname fis-methods
+#' @aliases fis<-,ReactomeFINetwork,data.frame-method
 setMethod("fis<-", signature("ReactomeFINetwork", "data.frame"),
           function(object, value) {
     object@fis <- value
     object
 })
 
+#' @rdname modules-methods
+#' @aliases modules,ReactomeFINetwork-method
 setMethod("modules", signature("ReactomeFINetwork"), function(object) {
     object@modules
 })
 
+#' @rdname modules-methods
+#' @aliases modules<-,ReactomeFINetwork,data.frame-method
 setMethod("modules<-", signature("ReactomeFINetwork", "data.frame"),
           function(object, value) {
     object@modules <- value
@@ -33,6 +45,9 @@ setMethod("modules<-", signature("ReactomeFINetwork", "data.frame"),
 #' @param object ReactomeFINetwork object.
 #' @param genes Character vector of gene names
 #' @return ReactomeFINetwork ReactomeFINetwork object with fis attribute set
+#'
+#' @rdname build-methods
+#' @aliases build,ReactomeFINetwork,character-method
 setMethod("build", signature("ReactomeFINetwork", "character"),
           function(object, genes) {
     if (length(genes) > 1) {
@@ -42,6 +57,8 @@ setMethod("build", signature("ReactomeFINetwork", "character"),
     object
 })
 
+#' @rdname cluster-methods
+#' @aliases cluster,ReactomeFINetwork-method
 setMethod("cluster", signature("ReactomeFINetwork"), function(object) {
     if (nrow(fis(object)) == 0) {
         warning("No FI network data found. Please build the network first.")
@@ -52,6 +69,8 @@ setMethod("cluster", signature("ReactomeFINetwork"), function(object) {
     object
 })
 
+#' @rdname annotate-methods
+#' @aliases annotate,ReactomeFINetwork,character-method
 setMethod("annotate", signature("ReactomeFINetwork", "character"),
           function(object, type = c("Pathway", "BP", "CC", "MF")) {
     if (nrow(fis(object)) == 0) {
@@ -65,6 +84,8 @@ setMethod("annotate", signature("ReactomeFINetwork", "character"),
     return(queryAnnotateGeneSet(service, genes, type))
 })
 
+#' @rdname annotateModules-methods
+#' @aliases annotateModules,ReactomeFINetwork-method
 setMethod("annotateModules", signature("ReactomeFINetwork"),
           function(object, type = c("Pathway", "BP", "CC", "MF"),
                    min.module.size = 1) {
@@ -169,6 +190,8 @@ ggplot.net <- function(vertex.coords, edge.coords, colour.modules, node.alpha,
 #' @import ggplot2
 #'
 #' @export
+#' @rdname plot-methods
+#' @aliases plot,ReactomeFINetwork,missing-method
 setMethod("plot", signature(x = "ReactomeFINetwork", y = "missing"),
            function(x, layout = "kamadakawai", colour.modules = TRUE,
                     node.alpha = 0.5, edge.alpha = 0.25) {

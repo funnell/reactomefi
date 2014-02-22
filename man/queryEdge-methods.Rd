@@ -1,5 +1,7 @@
+\docType{methods}
 \name{queryEdge}
 \alias{queryEdge}
+\alias{queryEdge,ReactomeFIService,character,character-method}
 \title{Query Edge}
 \arguments{
   \item{object}{ReactomeFIService object}

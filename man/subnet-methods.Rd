@@ -1,5 +1,7 @@
+\docType{methods}
 \name{subnet}
 \alias{subnet}
+\alias{subnet,HotNet-method}
 \title{Create HotNet ReacomeFI Network}
 \arguments{
   \item{object}{HotNet object.}

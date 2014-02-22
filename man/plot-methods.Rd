@@ -1,5 +1,6 @@
 \name{plot}
 \alias{plot}
+\alias{plot,ReactomeFINetwork,missing-method}
 \title{Plot Network}
 \arguments{
   \item{object}{ReactomeFINetwork object}

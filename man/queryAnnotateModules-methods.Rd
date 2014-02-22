@@ -1,5 +1,7 @@
+\docType{methods}
 \name{queryAnnotateModules}
 \alias{queryAnnotateModules}
+\alias{queryAnnotateModules,ReactomeFIService,data.frame,character-method}
 \title{Query Annotate FI Network Module Gene Set}
 \arguments{
   \item{object}{ReactomeFIService object.}

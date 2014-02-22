@@ -1,5 +1,7 @@
+\docType{methods}
 \name{cluster}
 \alias{cluster}
+\alias{cluster,ReactomeFINetwork-method}
 \title{Cluster Network}
 \arguments{
   \item{object}{ReactomeFINetwork object.}

@@ -108,7 +108,7 @@ test_that("queryHotNetAnalysis returns modules", {
                       c("KLF6", "BCL11A","KLF4"), c("PRKD2", "NF1", "DST"),
                       c("PAX5", "MYCN"), c("PTCH1", "SHH"),
                       c("NOTCH1", "DTX3"), c("EPHA7", "EPHA2"))
-    data(GlioblastomaMAF)
+    data(glioblastoma.maf)
     gene.scores <- maf2genescores(glioblastoma.maf)
     hotnet <- HotNet(gene.scores, "2012")
     res.mod.genes <- lapply(modules(hotnet), function(x) x$genes)

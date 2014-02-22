@@ -1,5 +1,7 @@
+\docType{methods}
 \name{queryBuildNetwork}
 \alias{queryBuildNetwork}
+\alias{queryBuildNetwork,ReactomeFIService,character-method}
 \title{Query Build Network}
 \arguments{
   \item{object}{ReactomeFIService object.}

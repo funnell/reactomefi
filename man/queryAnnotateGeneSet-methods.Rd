@@ -1,5 +1,7 @@
+\docType{methods}
 \name{queryAnnotateGeneSet}
 \alias{queryAnnotateGeneSet}
+\alias{queryAnnotateGeneSet,ReactomeFIService,character,character-method}
 \title{Query Annotate Gene Set}
 \arguments{
   \item{object}{ReactomeFIService object.}

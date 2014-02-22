@@ -6,14 +6,22 @@
 #' 
 #' Retrieve the Reactome FI network version.
 #' 
+#' @param object ReactomeFIService object.
 #' @return character
+#'
+#' @docType methods
+#' @rdname version-methods
 setGeneric("version", function(object) standardGeneric("version"))
 
 #' RESTful API URL
 #'
 #' Retrieve the base URL for the ReactomeFI RESTful API.
 #'
+#' @param object ReactomeFIService object.
 #' @return character
+#'
+#' @docType methods
+#' @rdname serviceURL-methods
 setGeneric("serviceURL", function(object) standardGeneric("serviceURL"))
 
 #' Query Functional Interactions
@@ -24,6 +32,9 @@ setGeneric("serviceURL", function(object) standardGeneric("serviceURL"))
 #' @param genes Character vector of gene names.
 #' @return data.frame Each row represents a functional interaction and
 #'  comprises two columns - one for each gene in the interaction.
+#'
+#' @docType methods
+#' @rdname queryFIs-methods
 setGeneric("queryFIs", function(object, genes) standardGeneric("queryFIs"))
 
 #' Query Build Network
@@ -35,6 +46,9 @@ setGeneric("queryFIs", function(object, genes) standardGeneric("queryFIs"))
 #' @param genes Character vector of gene names.
 #' @return data.frame Each row represents a functional interaction and
 #'  comprises two columns - one for each gene in the interaction.
+#'
+#' @docType methods
+#' @rdname queryBuildNetwork-methods
 setGeneric("queryBuildNetwork", function(object, genes) {
     standardGeneric("queryBuildNetwork")
 })
@@ -48,6 +62,9 @@ setGeneric("queryBuildNetwork", function(object, genes) {
 #'  FIs. Each row contains two columns - one for each gene in the pair.
 #' @return data.frame Each row represents a functional interaction and
 #'  comprises two columns - one for each gene in the interaction.
+#'
+#' @docType methods
+#' @rdname queryFIsBetween-methods
 setGeneric("queryFIsBetween", function(object, gene.pairs) {
     standardGeneric("queryFIsBetween")
 })
@@ -62,6 +79,9 @@ setGeneric("queryFIsBetween", function(object, gene.pairs) {
 #' @return data.frame Each of the two rows corresponds to a protein specified
 #'  in the input parameters. The columns contain information regarding the
 #'  proteins including accession ID, database name, protein name and sequence.
+#'
+#' @docType methods
+#' @rdname queryEdge-methods
 setGeneric("queryEdge", function(object, name1, name2) {
     standardGeneric("queryEdge")
 })
@@ -75,6 +95,9 @@ setGeneric("queryEdge", function(object, name1, name2) {
 #' @param fis Data frame of functional interactions. Should be two columns per
 #'  row indicating the two nodes in the interaction
 #' @return data.frame Each row contains the gene name and the module id.
+#'
+#' @docType methods
+#' @rdname queryCluster-methods
 setGeneric("queryCluster", function(object, fis) {
     standardGeneric("queryCluster")
 })
@@ -90,7 +113,8 @@ setGeneric("queryCluster", function(object, fis) {
 #'  and includes related information such as the p-value and FDR generated
 #'  from enrichment analysis.
 #'
-#' @export
+#' @docType methods
+#' @rdname queryAnnotateGeneSet-methods
 setGeneric("queryAnnotateGeneSet",
            function(object, genes, type = c("Pathway", "BP", "CC", "MF")) {
     standardGeneric("queryAnnotateGeneSet")
@@ -106,6 +130,9 @@ setGeneric("queryAnnotateGeneSet",
 #' @return data.frame Each row represents an annotation of the provided type
 #'  and includes related information such as the p-value and FDR generated
 #'  from enrichment analysis and the module the annotation belongs to.
+#'
+#' @docType methods
+#' @rdname queryAnnotateModules-methods
 setGeneric("queryAnnotateModules",
            function(object, module.nodes,
                     type = c("Pathway", "BP", "CC", "MF")) {
@@ -124,6 +151,9 @@ setGeneric("queryAnnotateModules",
 #' @param fdr FDR cutoff.
 #' @param permutations Number of permutations.
 #' @return data.frame
+#'
+#' @docType methods
+#' @rdname queryHotNetAnalysis-methods
 setGeneric("queryHotNetAnalysis",
            function(object, gene.scores, delta, fdr, permutations,
                     auto.delta) {
@@ -143,6 +173,8 @@ setGeneric("queryHotNetAnalysis",
 #' @return ReactomeFIService
 #'
 #' @export
+#' @docType methods
+#' @rdname service-methods
 setGeneric("service", function(object)  standardGeneric("service"))
 
 #' Retrieve Network Module Data
@@ -153,6 +185,8 @@ setGeneric("service", function(object)  standardGeneric("service"))
 #' @return data.frame
 #'
 #' @export
+#' @docType methods
+#' @rdname modules-methods
 setGeneric("modules", function(object) standardGeneric("modules"))
 
 #' Set Network Module Data
@@ -164,6 +198,8 @@ setGeneric("modules", function(object) standardGeneric("modules"))
 #' @param value Network module information
 #'
 #' @export
+#' @docType methods
+#' @rdname modules-methods
 setGeneric("modules<-", function(object, value) standardGeneric("modules<-"))
 
 
@@ -180,6 +216,8 @@ setGeneric("modules<-", function(object, value) standardGeneric("modules<-"))
 #'  between two genes and consists of two columns - one for each gene.
 #'
 #' @export
+#' @docType methods
+#' @rdname fis-methods
 setGeneric("fis", function(object) standardGeneric("fis"))
 
 #' Set FI Network Data
@@ -193,6 +231,8 @@ setGeneric("fis", function(object) standardGeneric("fis"))
 #' @return ReactomeFINetwork
 #'
 #' @export
+#' @docType methods
+#' @rdname fis-methods
 setGeneric("fis<-", function(object, value) standardGeneric("fis<-"))
 
 #' Build Network
@@ -204,6 +244,8 @@ setGeneric("fis<-", function(object, value) standardGeneric("fis<-"))
 #' @return ReactomeFINetwork ReactomeFINetwork object with fis attribute set
 #'
 #' @export
+#' @docType methods
+#' @rdname build-methods
 setGeneric("build", function(object, genes) standardGeneric("build"))
 
 #' Cluster Network
@@ -216,6 +258,8 @@ setGeneric("build", function(object, genes) standardGeneric("build"))
 #'  set
 #'
 #' @export
+#' @docType methods
+#' @rdname cluster-methods
 setGeneric("cluster", function(object) standardGeneric("cluster"))
 
 #' Annotate Network
@@ -229,6 +273,8 @@ setGeneric("cluster", function(object) standardGeneric("cluster"))
 #' @return data.frame Results of the gene set enrichment analysis.
 #'
 #' @export
+#' @docType methods
+#' @rdname annotate-methods
 setGeneric("annotate",
            function(object, type = c("Pathway", "BP", "CC", "MF")) {
     standardGeneric("annotate")
@@ -249,7 +295,10 @@ setGeneric("annotate",
 #'
 #' @importFrom plyr ddply
 #' @importFrom plyr .
+#'
 #' @export
+#' @docType methods
+#' @rdname annotateModules-methods
 setGeneric("annotateModules",
            function(object, type = c("Pathway", "BP", "CC", "MF"),
                     min.module.size = 1) {
@@ -270,4 +319,6 @@ setGeneric("annotateModules",
 #' @return ReactomeFINetwork
 #'
 #' @export
+#' @docType methods
+#' @rdname subnet-methods
 setGeneric("subnet", function(object, fdr = 0.05) standardGeneric("subnet"))

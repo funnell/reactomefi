@@ -1,5 +1,7 @@
+\docType{methods}
 \name{build}
 \alias{build}
+\alias{build,ReactomeFINetwork,character-method}
 \title{Build Network}
 \arguments{
   \item{object}{ReactomeFINetwork object.}

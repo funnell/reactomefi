@@ -31,14 +31,20 @@ maf2genescores <- function(maf) {
     return(genescores)
 }
 
+#' @rdname service-methods
+#' @aliases service,HotNet-method
 setMethod("service", signature("HotNet"), function(object) {
     return(object@service)
 })
 
+#' @rdname modules-methods
+#' @aliases modules,HotNet-method
 setMethod("modules", signature("HotNet"), function(object) {
     return(object@modules)
 })
 
+#' @rdname subnet-methods
+#' @aliases subnet,HotNet-method
 setMethod("subnet", signature("HotNet"), function(object, fdr = 0.05) {
     mask <- sapply(modules(object), function(x) x$fdr <= fdr)
     sub.mods <- modules(object)[mask]

@@ -1,5 +1,7 @@
+\docType{methods}
 \name{queryFIsBetween}
 \alias{queryFIsBetween}
+\alias{queryFIsBetween,ReactomeFIService,data.frame-method}
 \title{Query FIs Between Genes}
 \arguments{
   \item{object}{ReactomeFIService object}

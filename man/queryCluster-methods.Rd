@@ -1,5 +1,7 @@
+\docType{methods}
 \name{queryCluster}
 \alias{queryCluster}
+\alias{queryCluster,ReactomeFIService,data.frame-method}
 \title{Query Cluster Functional Interaction Network}
 \arguments{
   \item{object}{ReactomeFIService object.}

@@ -1,7 +1,11 @@
+#' @rdname version-methods
+#' @aliases version,ReactomeFIService-method
 setMethod("version", signature("ReactomeFIService"), function(object) {
     return(object@version)
 })
 
+#' @rdname serviceURL-methods
+#' @aliases serviceURL,ReactomeFIService-method
 setMethod("serviceURL", signature("ReactomeFIService"), function(object) {
     version <- version(object)
     base.url = "http://reactomews.oicr.on.ca:8080/"
@@ -51,6 +55,8 @@ extractFIs <- function(doc) {
     return(fis)
 }
 
+#' @rdname queryFIs-methods
+#' @aliases queryFIs,ReactomeFIService,character-method
 setMethod("queryFIs",
           signature("ReactomeFIService", "character"),
           function(object, genes) {
@@ -60,6 +66,8 @@ setMethod("queryFIs",
     return(extractFIs(doc))
 })
 
+#' @rdname queryBuildNetwork-methods
+#' @aliases queryBuildNetwork,ReactomeFIService,character-method
 setMethod("queryBuildNetwork",
           signature("ReactomeFIService", "character"),
           function(object, genes) {
@@ -69,6 +77,8 @@ setMethod("queryBuildNetwork",
     return(extractFIs(doc))
 })
 
+#' @rdname queryFIsBetween-methods
+#' @aliases queryFIsBetween,ReactomeFIService,data.frame-method
 setMethod("queryFIsBetween",
           signature("ReactomeFIService", "data.frame"),
           function(object, gene.pairs) {
@@ -104,6 +114,8 @@ extractProteinInfo <- function(protein.node) {
     return(info)
 }
 
+#' @rdname queryEdge-methods
+#' @aliases queryEdge,ReactomeFIService,character,character-method
 setMethod("queryEdge",
           signature("ReactomeFIService", "character", "character"),
           function(object, name1, name2) {
@@ -144,6 +156,8 @@ fis2str <- function(fis) {
     return(fis.str)
 }
 
+#' @rdname queryCluster-methods
+#' @aliases queryCluster,ReactomeFIService,data.frame-method
 setMethod("queryCluster",
           signature("ReactomeFIService", "data.frame"),
           function(object, fis) {
@@ -187,6 +201,8 @@ extractAnnotations <- function(xml.node) {
     return(annotations[order(annotations$fdr), ])
 }
 
+#' @rdname queryAnnotateGeneSet-methods
+#' @aliases queryAnnotateGeneSet,ReactomeFIService,character,character-method
 setMethod("queryAnnotateGeneSet",
           signature("ReactomeFIService", "character", "character"),
           function(object, genes, type = c("Pathway", "BP", "CC", "MF")) {
@@ -218,6 +234,8 @@ df2tsv <- function(dat) {
     return(tsv)
 }
 
+#' @rdname queryAnnotateModules-methods
+#' @aliases queryAnnotateModules,ReactomeFIService,data.frame,character-method
 setMethod("queryAnnotateModules",
           signature("ReactomeFIService", "data.frame", "character"),
           function(object, module.nodes,
@@ -240,6 +258,8 @@ setMethod("queryAnnotateModules",
     return(module.annotations)
 })
 
+#' @rdname queryHotNetAnalysis-methods
+#' @aliases queryHotNetAnalysis,ReactomeFIService-method
 setMethod("queryHotNetAnalysis",
           signature("ReactomeFIService"),
           function(object, gene.scores, delta, fdr, permutations, auto.delta) {
