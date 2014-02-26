@@ -194,8 +194,18 @@ ggplot.net <- function(vertex.coords, edge.coords, colour.modules, node.alpha,
 #' @aliases plot,ReactomeFINetwork,missing-method
 setMethod("plot", signature(x = "ReactomeFINetwork", y = "missing"),
            function(x, layout = "kamadakawai", colour.modules = TRUE,
-                    node.alpha = 0.5, edge.alpha = 0.25) {
+                    min.module.size = 1, node.alpha = 0.5, edge.alpha = 0.25) {
     edgelist <- fis(x)
+
+    if (min.module.size > 1 && nrow(modules(x)) > 0) {
+        module.size.filter <- function(m) if (nrow(m) >= min.module.size) m
+        plot.modules <- ddply(modules(x), .(module), module.size.filter)
+
+        gene.filter <- function(e) if (all(e %in% plot.modules$gene)) e
+        edgelist <- apply(edgelist, 1, gene.filter)
+        edgelist <- data.frame(do.call(rbind, edgelist))
+    }
+
     genes <- unlist(edgelist)
     genes <- genes[!duplicated(genes)]
 
