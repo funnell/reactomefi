@@ -15,7 +15,7 @@ Imports:
 Suggests:
     RCytoscape,
     testthat
-License: BSD
+License: BSD_2_clause
 Collate:
     'AllClasses.R'
     'AllGenerics.R'
