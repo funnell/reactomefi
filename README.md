@@ -6,11 +6,11 @@ This package currently implements a limited interface to ReactomeFI functionalit
 
 #### Dependencies
 
-plyr
-ggplot2
-sna
-RCurl
-XML
+* plyr
+* ggplot2
+* sna
+* RCurl
+* XML
 
 #### Get Started:
 
