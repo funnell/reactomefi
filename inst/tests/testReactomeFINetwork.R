@@ -61,3 +61,12 @@ test_that("networks can be plotted", {
     expect_equal(nrow(base$data[[3]]), 12)
     expect_equal(unique(base$data[[1]]$group), 1)
 })
+
+test_that("cytoscape graphs can be built from ReactomeFINetwork objects", {
+    genes <- c("TP53", "PTEN", "EGFR", "ATM", "CLTCL1", "GRM8", "GRM7")
+    test.network <- build(network, genes)
+
+    cw <- buildCytoscapeGraph(test.network)
+    cw.class <- as.character(class(cw))
+    expect_equal(cw.class, "CytoscapeWindowClass")
+})

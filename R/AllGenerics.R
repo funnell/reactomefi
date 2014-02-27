@@ -305,6 +305,21 @@ setGeneric("annotateModules",
     standardGeneric("annotateModules")
 })
 
+#' Build Cytoscape Graph
+#'
+#' Construct and visualize a ReactomeFINetwork object in Cytoscape.
+#'
+#' @param object ReactomeFINetwork object.
+#' @param layout Cytoscape network layout method.
+#' @return CytoscapeWindowClass Cytoscape window object.
+#'
+#' @export
+#' @docType methods
+#' @rdname buildCytoscapeGraph-methods
+setGeneric("buildCytoscapeGraph", function(object, layout = "force-directed") {
+    standardGeneric("buildCytoscapeGraph")
+})
+
 
 ##
 # HotNetAnalysis generics

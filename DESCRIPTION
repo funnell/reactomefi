@@ -13,6 +13,7 @@ Imports:
     RCurl,
     XML
 Suggests:
+    RCytoscape,
     testthat
 License: BSD
 Collate:

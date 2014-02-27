@@ -234,3 +234,32 @@ setMethod("plot", signature(x = "ReactomeFINetwork", y = "missing"),
                      edge.alpha)
     return(gg)
 })
+
+#' @rdname buildCytoscapeGraph-methods
+#' @aliases buildCytoscapeGraph,ReactomeFINetwork-method
+setMethod("buildCytoscapeGraph", signature("ReactomeFINetwork"),
+          function(object, layout = "force-directed") {
+    if (!require(RCytoscape)) stop("RCytoscape is not installed.")
+
+    edgelist <- fis(object)
+    edgelist <- edgelist[!duplicated(edgelist), ]
+    genes <- unlist(edgelist)
+    genes <- genes[!duplicated(genes)]
+
+    cyto.g <- graphNEL(nodes = as.character(genes))
+    for (i in 1:nrow(edgelist)) {
+        cyto.g <- addEdge(edgelist[i, 1], edgelist[i, 2], cyto.g)
+    }
+
+    cy <- CytoscapeConnection()
+    window.title <- deparse(substitute(object))
+    if (window.title %in% as.character(getWindowList(cy))) {
+        deleteWindow(cy, window.title)
+    }
+    cw = new.CytoscapeWindow(window.title, cyto.g)
+    displayGraph(cw)
+    layoutNetwork(cw, layout.name = layout)
+    setNodeLabelRule(cw, "label")
+
+    return(cw)
+})
