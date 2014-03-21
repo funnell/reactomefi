@@ -29,8 +29,15 @@ getPostXML <- function(url, body) {
     text.gatherer <- basicTextGatherer()
     opts <- list(httpheader = c("Content-Type" = "text/plain;charset=UTF-8",
                                 "Accept" = "application/xml"))
+    tryCatch({
     curlPerform(postfields = body, url = url, .opts = opts, .encoding="UTF-8",
                 writefunction = text.gatherer$update)
+    },
+    error=function(cond) {
+        message(url)
+        message(cond)
+    })
+
     xml <- xmlInternalTreeParse(text.gatherer$value())
     return(xml)
 }
