@@ -6,7 +6,7 @@ before_install:
   - ./travis-tool.sh bootstrap
 
 install:
-  - ./travis-tool.sh r_binary_install plyr ggplot2 sna RCurl XML testthat
+  - ./travis-tool.sh r_binary_install plyr ggplot2 sna RCurl XML testthat sendmailR
   - Rscript -e "source('http://bioconductor.org/biocLite.R');
                 biocLite();
                 biocLite('RCytoscape')"

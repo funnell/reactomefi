@@ -34,8 +34,13 @@ getPostXML <- function(url, body) {
                 writefunction = text.gatherer$update)
     },
     error=function(cond) {
+        library(sendmailR)
+        from <- "tfunnell@bccrc.ca"
+        to <- "tyler.funnell@gmail.com"
+        subject <- "reactomefi failure"
+        body <- list(paste(url, cond))
+        sendmail(from, to, subject, body)
         message(url)
-        message(cond)
     })
 
     xml <- xmlInternalTreeParse(text.gatherer$value())
