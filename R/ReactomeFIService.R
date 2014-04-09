@@ -33,20 +33,8 @@ getPostXML <- function(url, body) {
     text.gatherer <- basicTextGatherer()
     opts <- list(httpheader = c("Content-Type" = "text/plain;charset=UTF-8",
                                 "Accept" = "application/xml"))
-    tryCatch({
-    curlPerform(postfields = body, url = url, .opts = opts, .encoding="UTF-8",
-                writefunction = text.gatherer$update)
-    },
-    error=function(cond) {
-        library(sendmailR)
-        from <- "tfunnell@bccrc.ca"
-        to <- "tyler.funnell@gmail.com"
-        subject <- "reactomefi failure"
-        body <- list(paste(url, cond))
-        sendmail(from, to, subject, body)
-        message(url)
-    })
-
+    curlPerform(postfields = body, url = url, .opts = opts,
+                .encoding = "UTF-8", writefunction = text.gatherer$update)
     xml <- xmlInternalTreeParse(text.gatherer$value())
     return(xml)
 }
