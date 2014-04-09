@@ -144,7 +144,7 @@ layout.net <- function(adj.mat, layout) {
 #' @return ggplot ggplot object
 ggplot.net <- function(vertex.coords, edge.coords, colour.modules, node.alpha,
                        edge.alpha) {
-    if (colour.modules) {
+    if (colour.modules && "module" %in% colnames(vertex.coords)) {
         vertex.coords["module"] <- factor(vertex.coords$module)
         node.aes <- aes(colour = module)
     } else {
