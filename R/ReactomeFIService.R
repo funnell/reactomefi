@@ -9,11 +9,15 @@ setMethod("version", signature("ReactomeFIService"), function(object) {
 setMethod("serviceURL", signature("ReactomeFIService"), function(object) {
     version <- version(object)
     base.url = "http://reactomews.oicr.on.ca:8080/"
-    if (version == "2012") {
-        return(paste(base.url, "caBigR3WebApp2012/FIService/network/",
-                     sep = ""))
-    } 
-    return(paste(base.url, "caBigR3WebApp/FIService/network/", sep = ""))
+
+    if (version == "2009") {
+        serv.url <- paste0(base.url, "caBigR3WebApp/FIService/network/")
+    } else if (version == "2012") {
+        serv.url <- paste0(base.url, "caBigR3WebApp2012/FIService/network/")
+    } else {
+        serv.url <- paste0(base.url, "caBigR3WebApp2013/FIService/network/")
+    }
+    return(serv.url)
 })
 
 #' Get POST Query XML Response

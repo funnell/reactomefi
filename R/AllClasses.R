@@ -1,18 +1,18 @@
 #' ReactomeFIService Class
 #'
 #' Represents an interface to the ReactomeFI RESTful API. Available versions
-#' include 2009 and 2012.
+#' include 2009, 2012, and 2013.
 #'
 #' @import RCurl
 #' @import XML
 #' @rdname ReactomeFIService
 setClass("ReactomeFIService",
     representation(version = "character"),
-    prototype(version = "2009"),
+    prototype(version = "2013"),
     validity = function(object) {
         version <- object@version
-        if (version != "2009" && version != "2012")
-            return("version must be either 2009(default) or 2012")
+        if (!version %in% c("2009", "2012", "2013"))
+            return("version must be either 2009, 2012, or 2013(default)")
         TRUE
     }
 )
@@ -21,12 +21,12 @@ setClass("ReactomeFIService",
 #'
 #' ReactomeFIService constructor.
 #'
-#' @param version character version of Reactome FI network (2009 or 2012)
+#' @param version character version of Reactome FI network (2009, 2012, 2013)
 #' @return ReactomeFIService
 #' 
 #' @export
 #' @rdname ReactomeFIService
-ReactomeFIService <- function(version = c("2009", "2012")) {
+ReactomeFIService <- function(version = c("2009", "2012", "2013")) {
     version <- match.arg(version)
     return(new("ReactomeFIService", version = version))
 }
@@ -55,7 +55,7 @@ setClass("ReactomeFINetwork",
 #'
 #' ReactomeFINetwork constructor
 #'
-#' @param version Version of ReactomeFI network (2009 or 2012).
+#' @param version Version of ReactomeFI network (2009, 2012, 2013).
 #' @param genes Character vector of gene names.
 #' @param cluster Set to TRUE to cluster the network if gene names have been
 #'  provided (default FALSE).
@@ -63,7 +63,7 @@ setClass("ReactomeFINetwork",
 #'
 #' @export
 #' @rdname ReactomeFINetwork
-ReactomeFINetwork <- function(version = c("2009", "2012"), genes = character(),
+ReactomeFINetwork <- function(version = c("2009", "2012", "2013"), genes = character(),
                               cluster = FALSE) {
     version <- match.arg(version)
     service <- ReactomeFIService(version)
@@ -114,7 +114,7 @@ setClass("HotNet",
 #' @param gene.scores data.frame where the first column contains gene names and
 #'  the second column contains scores representing the proportion of samples
 #'  in which the gene is mutated.
-#' @param version Version of ReactomeFI network (2009 or 2012).
+#' @param version Version of ReactomeFI network (2009, 2012, 2013).
 #' @param delta HotNet delta value
 #' @param fdr False discovery rate threshold
 #' @param permutations Number of permutations. Largest value is 1000.
@@ -126,8 +126,9 @@ setClass("HotNet",
 #'
 #' @export
 #' @rdname HotNet
-HotNet <- function(gene.scores, version = c("2009", "2012"), delta = 1e-4,
-                   fdr = 0.25, permutations = 100, auto.delta = F) {
+HotNet <- function(gene.scores, version = c("2009", "2012", "2013"),
+                   delta = 1e-4, fdr = 0.25, permutations = 100,
+                   auto.delta = F) {
     version <- match.arg(version)
     service <- ReactomeFIService(version)
     res <- queryHotNetAnalysis(service, gene.scores, delta, fdr, permutations,

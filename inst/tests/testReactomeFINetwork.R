@@ -1,7 +1,7 @@
 context("ReactomeFINetwork")
 
 
-network <- ReactomeFINetwork("2012")
+network <- ReactomeFINetwork("2013")
 
 test_that("network build does nothing if number of genes <= 1", {
     # queryFIs run on this gene return multiplt FIs
@@ -40,7 +40,7 @@ test_that("networks can be plotted", {
     expect_equal(length(base$data), 3)
     expect_equal(nrow(base$data[[1]]), 7)
     expect_equal(nrow(base$data[[2]]), 7)
-    expect_equal(nrow(base$data[[3]]), 12)
+    expect_equal(nrow(base$data[[3]]), 10)
     expect_equal(unique(base$data[[1]]$group), 1)
 
     test.network <- cluster(test.network)
@@ -51,7 +51,7 @@ test_that("networks can be plotted", {
     expect_equal(length(base$data), 3)
     expect_equal(nrow(base$data[[1]]), 7)
     expect_equal(nrow(base$data[[2]]), 7)
-    expect_equal(nrow(base$data[[3]]), 12)
+    expect_equal(nrow(base$data[[3]]), 10)
     expect_equal(unique(base$data[[1]]$group), c(1, 2))
 
     gg <- plot(test.network, colour.modules = FALSE)
@@ -61,6 +61,6 @@ test_that("networks can be plotted", {
     expect_equal(length(base$data), 3)
     expect_equal(nrow(base$data[[1]]), 7)
     expect_equal(nrow(base$data[[2]]), 7)
-    expect_equal(nrow(base$data[[3]]), 12)
+    expect_equal(nrow(base$data[[3]]), 10)
     expect_equal(unique(base$data[[1]]$group), 1)
 })
