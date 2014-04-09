@@ -93,10 +93,15 @@ setMethod("annotateModules", signature("ReactomeFINetwork"),
         message <- paste("No FI network module data found. Please cluster the",
                          "network first.")
         warning(message)
-        return(object)
+        return(data.frame())
     }
+
     module.size.filter <- function(x) { if (nrow(x) >= min.module.size) x }
     network.modules <- ddply(modules(object), .(module), module.size.filter)
+    if (nrow(network.modules) == 0) {
+        warning("No modules left to annotate.")
+        return(data.frame())
+    }
 
     type <- match.arg(type)
     service <- service(object)

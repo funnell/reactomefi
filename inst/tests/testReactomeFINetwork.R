@@ -17,13 +17,16 @@ test_that("network cluster properly filters modules below size threshold", {
 
     enriched.modules <- annotateModules(test.network)$module
     enriched.modules <- enriched.modules[!duplicated(enriched.modules)]
-    expect_that(length(enriched.modules), equals(2))
-    expect_that(enriched.modules, equals(c(0, 1)))
+    expect_equal(length(enriched.modules), 2)
+    expect_equal(enriched.modules, c(0, 1))
 
     enriched.modules <- annotateModules(test.network, min.module.size=4)$module
     enriched.modules <- enriched.modules[!duplicated(enriched.modules)]
-    expect_that(length(enriched.modules), equals(1))
-    expect_that(enriched.modules, equals(c(0)))
+    expect_equal(length(enriched.modules), 1)
+    expect_equal(enriched.modules, c(0))
+
+    enriched.modules <- annotateModules(test.network, min.module.size=10)
+    expect_equal(nrow(enriched.modules), 0)
 })
 
 test_that("networks can be plotted", {
