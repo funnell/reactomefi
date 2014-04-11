@@ -1,5 +1,6 @@
 #' reactomefi.
 #'
+#' @import methods
 #' @name reactomefi
 #' @docType package
 NULL
