@@ -1,9 +1,10 @@
 \name{ggplot.net}
 \alias{ggplot.net}
-\title{ggplot Network}
+\title{ggplot Network
+Plot network edges and vertices using ggplot}
 \usage{
-  ggplot.net(vertex.coords, edge.coords, colour.modules,
-    node.alpha, edge.alpha)
+ggplot.net(vertex.coords, edge.coords, colour.modules, node.alpha, edge.alpha,
+  indicate.linkers)
 }
 \arguments{
   \item{vertex.coords}{DataFrame containing vertex x,y
@@ -20,11 +21,14 @@
 
   \item{edge.alpha}{Value between 0 and 1 indicating the
   edges' transparency}
+
+  \item{indicate.linkers}{Set to TRUE to visualise linker
+  nodes as a diamond}
 }
 \value{
-  ggplot ggplot object
+ggplot ggplot object
 }
 \description{
-  Plot network edges and vertices using ggplot
+ggplot Network Plot network edges and vertices using ggplot
 }
 

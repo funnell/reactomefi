@@ -1,3 +1,7 @@
+#' @include AllClasses.R
+#' @include AllGenerics.R
+NULL
+
 #' @rdname version-methods
 #' @aliases version,ReactomeFIService-method
 setMethod("version", signature("ReactomeFIService"), function(object) {
@@ -21,11 +25,11 @@ setMethod("serviceURL", signature("ReactomeFIService"), function(object) {
 })
 
 #' Get POST Query XML Response
-#'
+#
 #' Make a POST request to a URL with a query string to be provided to
 #' curlPerform's postfields argument. curlPerform is used instead of postForm
 #' to allow sending unkeyed data.
-#'
+#
 #' @param url Character string containing URL to post query to.
 #' @param body Character string containing data to send in the post request.
 #' @return XMLDocument XML document generated from the POST query response.
@@ -40,9 +44,9 @@ getPostXML <- function(url, body) {
 }
 
 #' Extract FIs From XML Document
-#'
+#
 #' Extract FI gene pairs from an XML document returned from a server query.
-#'
+#
 #' @param doc XML document
 #' @return data.frame Data frame where each row represents an FI and each of
 #'  the two columns in the data frame contains a gene involved in the FI.
@@ -96,10 +100,10 @@ setMethod("queryFIsBetween",
 })
 
 #' extract Protein Info
-#'
+#
 #' Extract protein information including accession ID and DB name, protein
 #'  name, and sequence.
-#'
+#
 #' @param protein.node XML node containing protein information
 #' @return data.frame Data frame where each row corresponds to a protein and
 #'  the columns contain the information mentioned above.
@@ -132,10 +136,10 @@ setMethod("queryEdge",
 })
 
 #' FIs to String
-#'
+#
 #' Convert a FI data frame into a string according to conventions used in the
 #' ReactomeFI API.
-#'
+#
 #' @param fis data frame of FIs (each row contains two gene names)
 #' @return character Character string in TSV format where rows are separated
 #'  by "\\n" and columns within rows are separated by "\\t"
@@ -221,9 +225,9 @@ setMethod("queryAnnotateGeneSet",
 })
 
 #' Data Frame to TSV
-#'
+#
 #' Convert a data frame (not including headers) into a TSV string.
-#'
+#
 #' @param dat Data frame to be converted to a TSV string.
 #' @return character Each row is separated by "\\n" and each column within a
 #'  row is separated by a "\\t".

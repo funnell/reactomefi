@@ -39,10 +39,10 @@ ReactomeFIService <- function(version = c("2009", "2012", "2013")) {
 #'
 #' @rdname ReactomeFINetwork
 setClass("ReactomeFINetwork",
-    representation(service = "ReactomeFIService", fis = "data.frame",
-                   modules = "data.frame"),
-    prototype(service = ReactomeFIService(), fis = data.frame(),
-              modules = data.frame()),
+    representation(service = "ReactomeFIService", genes = "character",
+                   fis = "data.frame", modules = "data.frame"),
+    prototype(service = ReactomeFIService(), genes = character(),
+              fis = data.frame(), modules = data.frame()),
     validity = function(object) {
         if (class(object@service) != "ReactomeFIService") {
             return("service must be of class ReactomeFIService")
@@ -57,20 +57,23 @@ setClass("ReactomeFINetwork",
 #'
 #' @param version Version of ReactomeFI network (2009, 2012, 2013).
 #' @param genes Character vector of gene names.
+#' @param use.linkers Set to TRUE to build a network using linker genes
+#'  (default: FALSE)
 #' @param cluster Set to TRUE to cluster the network if gene names have been
 #'  provided (default FALSE).
 #' @return ReactomeFINetwork ReactomeFINetwork S4 object
 #'
 #' @export
 #' @rdname ReactomeFINetwork
-ReactomeFINetwork <- function(version = c("2009", "2012", "2013"), genes = character(),
+ReactomeFINetwork <- function(version = c("2009", "2012", "2013"),
+                              genes = character(), use.linkers = FALSE,
                               cluster = FALSE) {
     version <- match.arg(version)
     service <- ReactomeFIService(version)
     network <- new("ReactomeFINetwork", service = service)
 
     if (length(genes) > 0) {
-        network <- build(network, genes)
+        network <- build(network, genes, use.linkers)
         if (cluster) {
             network <- cluster(network)
         }

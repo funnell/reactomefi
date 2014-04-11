@@ -4,13 +4,20 @@
 \alias{service,HotNet-method}
 \alias{service,ReactomeFINetwork-method}
 \title{Retrieve ReactomeFIService Object}
+\usage{
+service(object)
+
+\S4method{service}{HotNet}(object)
+
+\S4method{service}{ReactomeFINetwork}(object)
+}
 \arguments{
   \item{object}{ReactomeFINetwork or HotNet object.}
 }
 \value{
-  ReactomeFIService
+ReactomeFIService
 }
 \description{
-  Retrieve the underlying ReactomeFIService object.
+Retrieve the underlying ReactomeFIService object.
 }
 

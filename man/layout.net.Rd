@@ -1,8 +1,10 @@
 \name{layout.net}
 \alias{layout.net}
-\title{Layout ReactomeFINetwork}
+\title{Layout ReactomeFINetwork
+Retrieve the coordinates for the network vertices according to the
+ specified layout algorithm}
 \usage{
-  layout.net(adj.mat, layout)
+layout.net(adj.mat, layout.type)
 }
 \arguments{
   \item{adj.mat}{Adjacency matrix}
@@ -11,11 +13,12 @@
   gplot.layout}
 }
 \value{
-  data.frame DataFrame containing x and y coordinates of
-  network vertices
+data.frame DataFrame containing x and y coordinates of
+network vertices
 }
 \description{
-  Retrieve the coordinates for the network vertices
-  according to the specified layout algorithm
+Layout ReactomeFINetwork Retrieve the coordinates for the
+network vertices according to the specified layout
+algorithm
 }
 

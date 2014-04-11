@@ -3,9 +3,11 @@
 \alias{glioblastoma.maf}
 \title{Glioblastoma MAF}
 \format{A data frame with 453 rows and 34 columns}
-\description{
-  A dataset containing mutations from the TCGA GBM project.
+\usage{
+data(glioblastoma.maf)
 }
-\keyword{dataset}
+\description{
+A dataset containing mutations from the TCGA GBM project.
+}
 \keyword{datasets}
 

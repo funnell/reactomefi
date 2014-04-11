@@ -2,7 +2,7 @@
 # ReactomeFIService generics
 ##
 
-#' Reactome FI Network Version (2009 or 2012)
+#' Reactome FI Network Version
 #' 
 #' Retrieve the Reactome FI network version.
 #' 
@@ -177,6 +177,30 @@ setGeneric("queryHotNetAnalysis",
 #' @rdname service-methods
 setGeneric("service", function(object)  standardGeneric("service"))
 
+#' Retrieve Network Genes
+#'
+#' Retreive network gene list
+#'
+#' @param object ReactomeFINetwork.
+#' @return character
+#'
+#' @export
+#' @docType methods
+#' @rdname genes-methods
+setGeneric("genes", function(object) standardGeneric("genes"))
+
+#' Set Network Genes
+#'
+#' Set network gene list.
+#'
+#' @param object ReactomeFINetwork.
+#' @param value Character gene list
+#'
+#' @export
+#' @docType methods
+#' @rdname genes-methods
+setGeneric("genes<-", function(object, value) standardGeneric("genes<-"))
+
 #' Retrieve Network Module Data
 #'
 #' Retreive network module data.
@@ -241,12 +265,17 @@ setGeneric("fis<-", function(object, value) standardGeneric("fis<-"))
 #'
 #' @param object ReactomeFINetwork object.
 #' @param genes Character vector of gene names
+#' @param use.linkers Set to TRUE to build a network using linker genes
+#'  (default: FALSE)
 #' @return ReactomeFINetwork ReactomeFINetwork object with fis attribute set
 #'
 #' @export
 #' @docType methods
 #' @rdname build-methods
-setGeneric("build", function(object, genes) standardGeneric("build"))
+setGeneric("build",
+           function(object, genes, use.linkers = FALSE) {
+    standardGeneric("build")
+})
 
 #' Cluster Network
 #'
@@ -270,13 +299,16 @@ setGeneric("cluster", function(object) standardGeneric("cluster"))
 #' @param type Character string containing the type of annotation to use.
 #'  Accepted values are "Pathway", "BP" for biological process, "CC" for
 #'  cellular component, and "MF" for molecular function.
+#' @param include.linkers Set to TRUE if linker genes in the network should be
+#'  included in network annotation. This may bias results. (default: FALSE)
 #' @return data.frame Results of the gene set enrichment analysis.
 #'
 #' @export
 #' @docType methods
 #' @rdname annotate-methods
 setGeneric("annotate",
-           function(object, type = c("Pathway", "BP", "CC", "MF")) {
+           function(object, type = c("Pathway", "BP", "CC", "MF"),
+                    include.linkers = FALSE) {
     standardGeneric("annotate")
 })
 
@@ -289,6 +321,8 @@ setGeneric("annotate",
 #' @param type Character string containing the type of annotation to use.
 #'  Accepted values are "Pathway", "BP" for biological process, "CC" for
 #'  cellular component, and "MF" for molecular function.
+#' @param include.linkers Set to TRUE if linker genes in the network should be
+#'  included in network annotation. This may bias results. (default: FALSE)
 #' @return data.frame Results of the gene set enrichment analysis. The output
 #'  will be the same as the \code{\link{annotate}} method plus another column
 #'  for the module the annotation corresponds to.
@@ -301,7 +335,7 @@ setGeneric("annotate",
 #' @rdname annotateModules-methods
 setGeneric("annotateModules",
            function(object, type = c("Pathway", "BP", "CC", "MF"),
-                    min.module.size = 1) {
+                    min.module.size = 1, include.linkers = FALSE) {
     standardGeneric("annotateModules")
 })
 
@@ -325,7 +359,7 @@ setGeneric("buildCytoscapeGraph", function(object, layout = "force-directed") {
 # HotNetAnalysis generics
 ##
 
-#' Create HotNet ReacomeFI Network
+#' Create HotNet ReactomeFI Network
 #'
 #' Create a ReactomeFI Network from a subset of the HotNet modules.
 #'

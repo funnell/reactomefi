@@ -3,6 +3,11 @@
 \alias{queryCluster}
 \alias{queryCluster,ReactomeFIService,data.frame-method}
 \title{Query Cluster Functional Interaction Network}
+\usage{
+queryCluster(object, fis)
+
+\S4method{queryCluster}{ReactomeFIService,data.frame}(object, fis)
+}
 \arguments{
   \item{object}{ReactomeFIService object.}
 
@@ -11,12 +16,12 @@
   interaction}
 }
 \value{
-  data.frame Each row contains the gene name and the module
-  id.
+data.frame Each row contains the gene name and the module
+id.
 }
 \description{
-  Query the RESTful API to cluster a FI network. The
-  network nodes (genes) and the network modules they belong
-  to are returned.
+Query the RESTful API to cluster a FI network. The network
+nodes (genes) and the network modules they belong to are
+returned.
 }
 

@@ -3,6 +3,12 @@
 \alias{queryHotNetAnalysis}
 \alias{queryHotNetAnalysis,ReactomeFIService-method}
 \title{Query HotNet Analysis}
+\usage{
+queryHotNetAnalysis(object, gene.scores, delta, fdr, permutations, auto.delta)
+
+\S4method{queryHotNetAnalysis}{ReactomeFIService}(object, gene.scores, delta,
+  fdr, permutations, auto.delta)
+}
 \arguments{
   \item{object}{ReactomeFIService object.}
 
@@ -16,12 +22,12 @@
   \item{permutations}{Number of permutations.}
 }
 \value{
-  data.frame
+data.frame
 }
 \description{
-  Query the RESTful API to do HotNet analysis. The
-  ReactomeFI API implements the "HotNet" algorithm for
-  doing cancer mutation analysis developed by Raphael's
-  group at Brown University.
+Query the RESTful API to do HotNet analysis. The ReactomeFI
+API implements the "HotNet" algorithm for doing cancer
+mutation analysis developed by Raphael's group at Brown
+University.
 }
 

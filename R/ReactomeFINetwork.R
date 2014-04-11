@@ -1,3 +1,8 @@
+#' @include AllClasses.R
+#' @include AllGenerics.R
+#' @include ReactomeFIService.R
+NULL
+
 #' @rdname version-methods
 #' @aliases version,ReactomeFINetwork-method
 setMethod("version", signature("ReactomeFINetwork"), function(object) {
@@ -8,6 +13,20 @@ setMethod("version", signature("ReactomeFINetwork"), function(object) {
 #' @aliases service,ReactomeFINetwork-method
 setMethod("service", signature("ReactomeFINetwork"), function(object) {
     return(object@service)
+})
+
+#' @rdname genes-methods
+#' @aliases genes,ReactomeFINetwork-method
+setMethod("genes", signature("ReactomeFINetwork"), function(object) {
+    object@genes
+})
+
+#' @rdname genes-methods
+#' @aliases genes<-,ReactomeFINetwork,character-method
+setMethod("genes<-", signature("ReactomeFINetwork", "character"),
+          function(object, value) {
+    object@genes <- value
+    object
 })
 
 #' @rdname fis-methods
@@ -38,21 +57,19 @@ setMethod("modules<-", signature("ReactomeFINetwork", "data.frame"),
     object
 })
 
-#' Build FI Network
-#'
-#' Build FI network from a list of genes.
-#'
-#' @param object ReactomeFINetwork object.
-#' @param genes Character vector of gene names
-#' @return ReactomeFINetwork ReactomeFINetwork object with fis attribute set
-#'
 #' @rdname build-methods
 #' @aliases build,ReactomeFINetwork,character-method
 setMethod("build", signature("ReactomeFINetwork", "character"),
-          function(object, genes) {
+          function(object, genes, use.linkers = FALSE) {
     if (length(genes) > 1) {
+        genes(object) <- genes
         service <- service(object)
-        fis(object) <- queryFIs(service, genes)
+
+        if (use.linkers) {
+            fis(object) <- queryBuildNetwork(service, genes)
+        } else {
+            fis(object) <- queryFIs(service, genes)
+        }
     }
     object
 })
@@ -72,23 +89,30 @@ setMethod("cluster", signature("ReactomeFINetwork"), function(object) {
 #' @rdname annotate-methods
 #' @aliases annotate,ReactomeFINetwork,character-method
 setMethod("annotate", signature("ReactomeFINetwork", "character"),
-          function(object, type = c("Pathway", "BP", "CC", "MF")) {
+          function(object, type = c("Pathway", "BP", "CC", "MF"),
+                   include.linkers = FALSE) {
     if (nrow(fis(object)) == 0) {
         warning("No FI network data found. Please build the network first.")
         return(object)
     }
+
+    fis <- fis(object)
+    fi.genes <- union(fis$first.protein, fis$second.protein)
+    
+    if (!include.linkers) {
+        fi.genes <- fi.genes[fi.genes %in% genes(object)]
+    }
+
     type <- match.arg(type)
     service <- service(object)
-    fis <- fis(object)
-    genes <- union(fis$first.protein, fis$second.protein)
-    return(queryAnnotateGeneSet(service, genes, type))
+    return(queryAnnotateGeneSet(service, fi.genes, type))
 })
 
 #' @rdname annotateModules-methods
 #' @aliases annotateModules,ReactomeFINetwork-method
 setMethod("annotateModules", signature("ReactomeFINetwork"),
           function(object, type = c("Pathway", "BP", "CC", "MF"),
-                   min.module.size = 1) {
+                   min.module.size = 1, include.linkers = FALSE) {
     if (nrow(modules(object)) == 0) {
         message <- paste("No FI network module data found. Please cluster the",
                          "network first.")
@@ -103,53 +127,66 @@ setMethod("annotateModules", signature("ReactomeFINetwork"),
         return(data.frame())
     }
 
+    if (!include.linkers) {
+        network.modules <- subset(network.modules, gene %in% genes(object))
+    }
+
     type <- match.arg(type)
     service <- service(object)
     return(queryAnnotateModules(service, network.modules, type))
 })
 
 #' Layout ReactomeFINetwork
-#'
+#
 #' Retrieve the coordinates for the network vertices according to the
 #'  specified layout algorithm
-#'
+#
 #' @param adj.mat Adjacency matrix
 #' @param layout Layout algorithm as defined by sna's gplot.layout
 #' @return data.frame DataFrame containing x and y coordinates of network
 #'  vertices
-layout.net <- function(adj.mat, layout) {
-    layout.fname <- paste0("gplot.layout.", layout)
+layout.net <- function(adj.mat, layout.type) {
+    layout.fname <- paste0("gplot.layout.", layout.type)
     if (exists(layout.fname)) {
         layout.f <- get(layout.fname)
         vertices <- layout.f(adj.mat, NULL)
         vertices <- data.frame(vertices)
         colnames(vertices) <- c("x", "y")
     } else {
-        warning("invalid network layout type")
+        warning(paste("invalid network layout type:", layout.type))
         vertices <- data.frame(x = numeric(), y = numeric())
     }
     return(vertices)
 }
 
 #' ggplot Network
-#'
+#
 #' Plot network edges and vertices using ggplot
-#'
+#
 #' @param vertex.coords DataFrame containing vertex x,y coordinates, gene
 #'  names, and optionally module labels.
 #' @param edge.coords DataFrame containing edge line end coordinates
 #' @param colour.modules Set to TRUE to colour nodes according to their module
 #' @param node.alpha Value between 0 and 1 indicating nodes' transparency
 #' @param edge.alpha Value between 0 and 1 indicating the edges' transparency
+#' @param indicate.linkers Set to TRUE to visualise linker nodes as a diamond
 #' @return ggplot ggplot object
 ggplot.net <- function(vertex.coords, edge.coords, colour.modules, node.alpha,
-                       edge.alpha) {
+                       edge.alpha, indicate.linkers) {
     if (colour.modules && "module" %in% colnames(vertex.coords)) {
         vertex.coords["module"] <- factor(vertex.coords$module)
-        node.aes <- aes(colour = module)
+        node.colour <- "module"
     } else {
-        node.aes <- aes()
+        node.colour <- NULL
     }
+
+    if (indicate.linkers && "linker" %in% colnames(vertex.coords)) {
+        node.shape <- "linker"
+    } else {
+        node.shape <- NULL
+    }
+
+    node.aes <- aes_string(colour = node.colour, shape = node.shape)
 
     gg <- ggplot(vertex.coords, aes(x, y))
     gg <- gg + geom_point(node.aes, size = 10, alpha = node.alpha)
@@ -163,18 +200,20 @@ ggplot.net <- function(vertex.coords, edge.coords, colour.modules, node.alpha,
                      axis.text  = element_blank(),
                      axis.title = element_blank())
     gg <- gg + scale_x_continuous(expand = c(0.10, 0))
+    gg <- gg + scale_shape_manual(values = c(16, 18))
     return(gg)
 }
 
 #' Plot Network
-#'
+#
 #' Plot the interaction network.
-#'
+#
 #' @param object ReactomeFINetwork object
 #' @param color.modules Set to FALSE to turn off module colouring
+#' @param indicate.linkers Set to TRUE to visualise linker nodes as a diamond
 #' @return ggplot ggplot object containing a visualization of the given
 #'  network
-#'
+#
 #' @importFrom sna gplot.layout.adj
 #' @importFrom sna gplot.layout.circle
 #' @importFrom sna gplot.layout.circrand
@@ -193,13 +232,14 @@ ggplot.net <- function(vertex.coords, edge.coords, colour.modules, node.alpha,
 #' @importFrom sna gplot.layout.springrepulse
 #' @importFrom sna gplot.layout.target
 #' @import ggplot2
-#'
+#
 #' @export
 #' @rdname plot-methods
 #' @aliases plot,ReactomeFINetwork,missing-method
 setMethod("plot", signature(x = "ReactomeFINetwork", y = "missing"),
            function(x, layout = "kamadakawai", colour.modules = TRUE,
-                    min.module.size = 1, node.alpha = 0.5, edge.alpha = 0.25) {
+                    min.module.size = 1, node.alpha = 0.5, edge.alpha = 0.25,
+                    indicate.linkers = TRUE) {
     edgelist <- fis(x)
 
     if (min.module.size > 1 && nrow(modules(x)) > 0) {
@@ -235,8 +275,12 @@ setMethod("plot", signature(x = "ReactomeFINetwork", y = "missing"),
         vertex.coords <- merge(vertex.coords, modules(x))
     }
 
+    if (indicate.linkers && any(!genes %in% genes(x))) {
+        vertex.coords["linker"] <- !vertex.coords$gene %in% genes(x)
+    }
+
     gg <- ggplot.net(vertex.coords, edge.coords, colour.modules, node.alpha,
-                     edge.alpha)
+                     edge.alpha, indicate.linkers)
     return(gg)
 })
 

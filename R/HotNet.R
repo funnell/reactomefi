@@ -1,3 +1,8 @@
+#' @include AllClasses.R
+#' @include AllGenerics.R
+#' @include ReactomeFINetwork.R
+NULL
+
 #' NCI MAF to genescore
 #'
 #' Converts a NCI Mutation Annotation File to a two column data.frame where

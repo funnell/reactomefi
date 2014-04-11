@@ -2,7 +2,12 @@
 \name{subnet}
 \alias{subnet}
 \alias{subnet,HotNet-method}
-\title{Create HotNet ReacomeFI Network}
+\title{Create HotNet ReactomeFI Network}
+\usage{
+subnet(object, fdr = 0.05)
+
+\S4method{subnet}{HotNet}(object, fdr = 0.05)
+}
 \arguments{
   \item{object}{HotNet object.}
 
@@ -10,10 +15,10 @@
   modules}
 }
 \value{
-  ReactomeFINetwork
+ReactomeFINetwork
 }
 \description{
-  Create a ReactomeFI Network from a subset of the HotNet
-  modules.
+Create a ReactomeFI Network from a subset of the HotNet
+modules.
 }
 

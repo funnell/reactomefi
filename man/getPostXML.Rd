@@ -1,8 +1,11 @@
 \name{getPostXML}
 \alias{getPostXML}
-\title{Get POST Query XML Response}
+\title{Get POST Query XML Response
+Make a POST request to a URL with a query string to be provided to
+curlPerform's postfields argument. curlPerform is used instead of postForm
+to allow sending unkeyed data.}
 \usage{
-  getPostXML(url, body)
+getPostXML(url, body)
 }
 \arguments{
   \item{url}{Character string containing URL to post query
@@ -12,13 +15,13 @@
   the post request.}
 }
 \value{
-  XMLDocument XML document generated from the POST query
-  response.
+XMLDocument XML document generated from the POST query
+response.
 }
 \description{
-  Make a POST request to a URL with a query string to be
-  provided to curlPerform's postfields argument.
-  curlPerform is used instead of postForm to allow sending
-  unkeyed data.
+Get POST Query XML Response Make a POST request to a URL
+with a query string to be provided to curlPerform's
+postfields argument. curlPerform is used instead of
+postForm to allow sending unkeyed data.
 }
 

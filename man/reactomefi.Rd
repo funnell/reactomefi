@@ -4,6 +4,6 @@
 \alias{reactomefi-package}
 \title{reactomefi.}
 \description{
-  reactomefi.
+reactomefi.
 }
 
