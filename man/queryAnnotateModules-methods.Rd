@@ -15,6 +15,9 @@ queryAnnotateModules(object, module.nodes, type = c("Pathway", "BP", "CC",
 
   \item{module.nodes}{Data frame with network nodes (genes)
   and their module.}
+
+  \item{type}{Gene annotation enrichment type (Pathway, BP,
+  CC, MF).}
 }
 \value{
 data.frame Each row represents an annotation of the

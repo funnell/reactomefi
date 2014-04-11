@@ -109,6 +109,7 @@ setGeneric("queryCluster", function(object, fis) {
 #'
 #' @param object ReactomeFIService object.
 #' @param genes Character vector of gene names.
+#' @param type Gene annotation enrichment type (Pathway, BP, CC, MF).
 #' @return data.frame Each row represents an annotation of the provided type
 #'  and includes related information such as the p-value and FDR generated
 #'  from enrichment analysis.
@@ -127,6 +128,7 @@ setGeneric("queryAnnotateGeneSet",
 #'
 #' @param object ReactomeFIService object.
 #' @param module.nodes Data frame with network nodes (genes) and their module.
+#' @param type Gene annotation enrichment type (Pathway, BP, CC, MF).
 #' @return data.frame Each row represents an annotation of the provided type
 #'  and includes related information such as the p-value and FDR generated
 #'  from enrichment analysis and the module the annotation belongs to.
@@ -150,6 +152,7 @@ setGeneric("queryAnnotateModules",
 #' @param delta Numeric delta value.
 #' @param fdr FDR cutoff.
 #' @param permutations Number of permutations.
+#' @param auto.delta Set to TRUE to automatically select a delta value.
 #' @return data.frame
 #'
 #' @docType methods
@@ -193,7 +196,6 @@ setGeneric("genes", function(object) standardGeneric("genes"))
 #'
 #' Set network gene list.
 #'
-#' @param object ReactomeFINetwork.
 #' @param value Character gene list
 #'
 #' @export
@@ -218,7 +220,6 @@ setGeneric("modules", function(object) standardGeneric("modules"))
 #' Set network module data. ReactomeFINetwork objects accept data.frames and
 #'  HotNet objects accept lists
 #'
-#' @param object ReactomeFINetwork or HotNet object.
 #' @param value Network module information
 #'
 #' @export
@@ -248,7 +249,6 @@ setGeneric("fis", function(object) standardGeneric("fis"))
 #'
 #' Set the FI Network Data.
 #'
-#' @param object ReactomeFINetwork object.
 #' @param value Data frame representing the Reactome FI network data. Each row
 #'  represents an interaction between two genes and consists of two columns -
 #'  one for each gene.
@@ -321,6 +321,8 @@ setGeneric("annotate",
 #' @param type Character string containing the type of annotation to use.
 #'  Accepted values are "Pathway", "BP" for biological process, "CC" for
 #'  cellular component, and "MF" for molecular function.
+#' @param min.module.size Minimum module size to consider for annotation
+#'  (default: 1).
 #' @param include.linkers Set to TRUE if linker genes in the network should be
 #'  included in network annotation. This may bias results. (default: FALSE)
 #' @return data.frame Results of the gene set enrichment analysis. The output

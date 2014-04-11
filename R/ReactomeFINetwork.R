@@ -145,15 +145,15 @@ setMethod("annotateModules", signature("ReactomeFINetwork"),
 #' @param layout Layout algorithm as defined by sna's gplot.layout
 #' @return data.frame DataFrame containing x and y coordinates of network
 #'  vertices
-layout.net <- function(adj.mat, layout.type) {
-    layout.fname <- paste0("gplot.layout.", layout.type)
+layout.net <- function(adj.mat, layout) {
+    layout.fname <- paste0("gplot.layout.", layout)
     if (exists(layout.fname)) {
         layout.f <- get(layout.fname)
         vertices <- layout.f(adj.mat, NULL)
         vertices <- data.frame(vertices)
         colnames(vertices) <- c("x", "y")
     } else {
-        warning(paste("invalid network layout type:", layout.type))
+        warning(paste("invalid network layout:", layout))
         vertices <- data.frame(x = numeric(), y = numeric())
     }
     return(vertices)
@@ -206,13 +206,18 @@ ggplot.net <- function(vertex.coords, edge.coords, colour.modules, node.alpha,
 
 #' Plot Network
 #
-#' Plot the interaction network.
+#' Plot the interaction network. Layout methods are currently provided by the
+#'  gplot.layout methods in the sna package.
 #
-#' @param object ReactomeFINetwork object
-#' @param color.modules Set to FALSE to turn off module colouring
-#' @param indicate.linkers Set to TRUE to visualise linker nodes as a diamond
+#' @param x ReactomeFINetwork object
+#' @param layout Name of a layout method.
+#' @param colour.modules Set to FALSE to turn off module colouring.
+#' @param min.module.size Minimum size of a module to be plotted (default: 1).
+#' @param node.alpha Alpha value for nodes (default: 0.25).
+#' @param edge.alpha Alpha value for edges (default: 0.25).
+#' @param indicate.linkers Set to TRUE to visualise linker nodes as a diamond.
 #' @return ggplot ggplot object containing a visualization of the given
-#'  network
+#'  network.
 #
 #' @importFrom sna gplot.layout.adj
 #' @importFrom sna gplot.layout.circle

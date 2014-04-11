@@ -58,10 +58,10 @@ setClass("ReactomeFINetwork",
 #' @param version Version of ReactomeFI network (2009, 2012, 2013).
 #' @param genes Character vector of gene names.
 #' @param use.linkers Set to TRUE to build a network using linker genes
-#'  (default: FALSE)
+#'  (default: FALSE).
 #' @param cluster Set to TRUE to cluster the network if gene names have been
 #'  provided (default FALSE).
-#' @return ReactomeFINetwork ReactomeFINetwork S4 object
+#' @return ReactomeFINetwork ReactomeFINetwork S4 object.
 #'
 #' @export
 #' @rdname ReactomeFINetwork

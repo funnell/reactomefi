@@ -4,7 +4,7 @@
 Retrieve the coordinates for the network vertices according to the
  specified layout algorithm}
 \usage{
-layout.net(adj.mat, layout.type)
+layout.net(adj.mat, layout)
 }
 \arguments{
   \item{adj.mat}{Adjacency matrix}

@@ -17,8 +17,6 @@ genes(object) <- value
 \arguments{
   \item{object}{ReactomeFINetwork.}
 
-  \item{object}{ReactomeFINetwork.}
-
   \item{value}{Character gene list}
 }
 \value{

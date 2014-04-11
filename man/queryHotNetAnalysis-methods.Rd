@@ -20,6 +20,9 @@ queryHotNetAnalysis(object, gene.scores, delta, fdr, permutations, auto.delta)
   \item{fdr}{FDR cutoff.}
 
   \item{permutations}{Number of permutations.}
+
+  \item{auto.delta}{Set to TRUE to automatically select a
+  delta value.}
 }
 \value{
 data.frame

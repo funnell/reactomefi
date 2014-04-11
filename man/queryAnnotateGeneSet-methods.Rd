@@ -13,6 +13,9 @@ queryAnnotateGeneSet(object, genes, type = c("Pathway", "BP", "CC", "MF"))
   \item{object}{ReactomeFIService object.}
 
   \item{genes}{Character vector of gene names.}
+
+  \item{type}{Gene annotation enrichment type (Pathway, BP,
+  CC, MF).}
 }
 \value{
 data.frame Each row represents an annotation of the

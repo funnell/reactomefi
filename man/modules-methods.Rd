@@ -20,8 +20,6 @@ modules(object) <- value
 \arguments{
   \item{object}{ReactomeFINetwork or HotNet object.}
 
-  \item{object}{ReactomeFINetwork or HotNet object.}
-
   \item{value}{Network module information}
 }
 \value{

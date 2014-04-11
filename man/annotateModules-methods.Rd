@@ -18,6 +18,9 @@ annotateModules(object, type = c("Pathway", "BP", "CC", "MF"),
   for biological process, "CC" for cellular component, and
   "MF" for molecular function.}
 
+  \item{min.module.size}{Minimum module size to consider
+  for annotation (default: 1).}
+
   \item{include.linkers}{Set to TRUE if linker genes in the
   network should be included in network annotation. This
   may bias results. (default: FALSE)}
