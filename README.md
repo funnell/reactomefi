@@ -16,10 +16,14 @@ This package currently implements a limited interface to ReactomeFI functionalit
 
 #### Get Started:
 
-    network <- ReactomeFINetwork("2012", genes)
-    annotate(network, "Pathway")
-    plot(network)
+```{r}
+network <- ReactomeFINetwork("2012", genes)
+annotate(network, "Pathway")
+plot(network)
+```
 
-    network <- ReactomeFINetwork("2012", genes, cluster=TRUE)
-    annotateModules(network, "Pathway")
-    plot(network)
+```{r}
+network <- ReactomeFINetwork("2012", genes, cluster=TRUE)
+annotateModules(network, "Pathway")
+plot(network)
+```
