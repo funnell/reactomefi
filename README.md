@@ -14,6 +14,14 @@ This package currently implements a limited interface to ReactomeFI functionalit
 * RCurl
 * XML
 
+#### Installation
+
+The easiest way to install reactomefi is through devtools:
+
+```
+devtools::install_github("funnell/reactomefi")
+```
+
 #### Get Started:
 
 ```{r}
