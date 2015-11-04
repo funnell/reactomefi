@@ -18,7 +18,7 @@ This package currently implements a limited interface to ReactomeFI functionalit
 
 The easiest way to install reactomefi is through devtools:
 
-```
+```{r}
 devtools::install_github("funnell/reactomefi")
 ```
 
